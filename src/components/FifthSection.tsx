@@ -76,34 +76,28 @@ export default function FifthSection() {
               <mask id="video-mask">
                 <rect width="1000" height="600" fill="white" />
                 <text 
-                  x="500" y="230" 
+                  x="500" y="220" 
                   textAnchor="middle" 
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
-                  fontSize="52"
-                  fontWeight="400"
-                  letterSpacing="2"
                   fill="black"
+                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
                 >FOUR INGREDIENTS.</text>
                 <text 
-                  x="500" y="295" 
+                  x="500" y="300" 
                   textAnchor="middle" 
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
-                  fontSize="52"
-                  fontWeight="400"
-                  letterSpacing="2"
                   fill="black"
+                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
                 >MILLIONS OF LOAVES.</text>
                 <text 
-                  x="500" y="360" 
+                  x="500" y="380" 
                   textAnchor="middle" 
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
-                  fontSize="52"
-                  fontWeight="400"
-                  letterSpacing="2"
                   fill="black"
+                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
                 >ONE TRADITION.</text>
               </mask>
             </defs>
