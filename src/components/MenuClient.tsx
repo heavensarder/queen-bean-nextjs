@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { type MenuItem, type MenuCategory } from '@/lib/menuData';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { useCart, type CartAddOn } from '@/components/CartContext';
 
 export default function MenuClient({ initialCategories }: { initialCategories: MenuCategory[] }) {
   const [activeCategory, setActiveCategory] = useState(initialCategories[0].id);
@@ -383,6 +384,44 @@ function DetailModal({
   category: MenuCategory;
   onClose: () => void;
 }) {
+  const { addToCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
+  const [selectedAddOns, setSelectedAddOns] = useState<CartAddOn[]>([]);
+  const [specialInstructions, setSpecialInstructions] = useState('');
+
+  // Extract a base price number from a string like "5.25 / 6.25"
+  const basePriceStr = item.price.split('/')[0].replace(/[^0-9.]/g, '');
+  const basePrice = parseFloat(basePriceStr) || 0;
+
+  const handleAddOnToggle = (addon: { name: string; price: string }) => {
+    setSelectedAddOns((prev) => {
+      const exists = prev.find((a) => a.name === addon.name);
+      if (exists) {
+        return prev.filter((a) => a.name !== addon.name);
+      }
+      return [...prev, addon];
+    });
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+      menuItemId: item.id,
+      name: item.name,
+      price: basePrice,
+      quantity,
+      addOns: selectedAddOns,
+      specialInstructions,
+      image: item.image,
+    });
+    onClose();
+  };
+
+  const addOnsTotal = selectedAddOns.reduce(
+    (sum, addon) => sum + parseFloat(addon.price.replace(/[^0-9.]/g, '') || '0'),
+    0
+  );
+  const totalItemPrice = (basePrice + addOnsTotal) * quantity;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -433,7 +472,7 @@ function DetailModal({
         </div>
 
         {/* Details Side */}
-        <div className="flex-1 flex flex-col justify-center p-8 md:p-12 lg:p-16 overflow-y-auto">
+        <div className="flex-1 flex flex-col justify-start lg:justify-center p-6 md:p-12 lg:p-16 overflow-y-auto">
           {/* Category Label */}
           <motion.p
             initial={{ opacity: 0, x: 20 }}
@@ -459,7 +498,7 @@ function DetailModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="font-signature text-2xl md:text-3xl text-[#86603A] mt-1"
+            className="font-signature text-2xl md:text-3xl text-[#86603A] mt-1 mb-4"
           >
             Queen Bean
           </motion.p>
@@ -550,18 +589,86 @@ function DetailModal({
               <p className="text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-zinc-400 mb-3">
                 Add-ons
               </p>
-              <div className="flex flex-wrap gap-2">
-                {category.addOns.map((addon, i) => (
-                  <span
-                    key={i}
-                    className="text-sm font-brandon font-semibold text-zinc-700 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full"
-                  >
-                    {addon.name} <span className="text-[#86603A]">{addon.price}</span>
-                  </span>
-                ))}
+              <div className="flex flex-col gap-3">
+                {category.addOns.map((addon, i) => {
+                  const isSelected = selectedAddOns.some((a) => a.name === addon.name);
+                  return (
+                    <label
+                      key={i}
+                      className="flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all hover:border-[#86603A]/50 bg-zinc-50 border-zinc-200"
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => handleAddOnToggle(addon)}
+                          className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                        />
+                        <span className="font-brandon font-semibold text-zinc-900">{addon.name}</span>
+                      </div>
+                      <span className="font-brandon font-bold text-[#86603A]">{addon.price}</span>
+                    </label>
+                  );
+                })}
               </div>
             </motion.div>
           )}
+
+          {/* Special Instructions */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="mt-6 border-t border-zinc-200 pt-6"
+          >
+            <p className="text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-zinc-400 mb-3">
+              Special Instructions
+            </p>
+            <textarea
+              value={specialInstructions}
+              onChange={(e) => setSpecialInstructions(e.target.value)}
+              placeholder="e.g. No onions, extra sauce..."
+              className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-4 font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 resize-none h-24"
+            />
+          </motion.div>
+
+          {/* Quantity & Add to Cart */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-8 pt-6 border-t border-zinc-200 sticky bottom-0 bg-white z-10 pb-4"
+          >
+            <div className="flex items-center gap-4">
+              {/* Quantity */}
+              <div className="flex items-center bg-zinc-100 rounded-xl p-1 shrink-0">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+                <span className="w-8 text-center font-anton text-lg">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+              </div>
+
+              {/* Add to Cart Button */}
+              <button
+                onClick={handleAddToCart}
+                className="flex-1 bg-black text-white px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors shadow-xl flex items-center justify-between group"
+              >
+                <span>Add to Cart</span>
+                <span className="text-[#86603A] group-hover:text-white transition-colors">
+                  ${totalItemPrice.toFixed(2)}
+                </span>
+              </button>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
     </motion.div>

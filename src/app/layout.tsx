@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Anton, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import { CartProvider } from "@/components/CartContext";
+import CartSidebar from "@/components/CartSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,9 +44,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <CartProvider>
+          <CartSidebar />
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </CartProvider>
       </body>
     </html>
   );
