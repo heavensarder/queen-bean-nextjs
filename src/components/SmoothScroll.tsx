@@ -22,7 +22,25 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     requestAnimationFrame(raf);
 
+    // Intercept anchor clicks to use Lenis smooth scroll
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (target && target.hash && target.href.includes(window.location.pathname)) {
+        const id = target.hash;
+        if (id && id !== '#') {
+          const el = document.querySelector(id);
+          if (el) {
+            e.preventDefault();
+            lenis.scrollTo(el);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
     return () => {
+      document.removeEventListener('click', handleClick);
       lenis.destroy();
     };
   }, []);
