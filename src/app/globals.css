@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: druk, "druk Fallback", notoSansJp, "notoSansJp Fallback", brandonText, "brandonText Fallback", sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-anton: var(--font-anton);
+  --font-signature: var(--font-signature);
+  --font-brandon: brandonText, "brandonText Fallback", sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: druk, "druk Fallback", notoSansJp, "notoSansJp Fallback", brandonText, "brandonText Fallback", sans-serif;
+}
+
+h2 {
+  font-family: var(--font-anton);
+}
+
+button {
+  font-family: brandonText, "brandonText Fallback", sans-serif;
+}
+
+/* Hero text spacing - one text at a time on mobile, tighter on desktop */
+.hero-scroll-text {
+  gap: 35vh;
+}
+
+@media (min-width: 768px) {
+  .hero-scroll-text {
+    gap: 15vh;
+  }
+}
