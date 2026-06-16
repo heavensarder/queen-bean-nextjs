@@ -6,7 +6,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black text-white pt-24 pb-8 px-6 md:px-12 flex flex-col items-center z-[80] relative">
+    <footer className="bg-black text-white pt-24 pb-8 px-6 md:px-12 flex flex-col items-center z-[80] relative transform-gpu">
       {/* Logo Area */}
       <div className="mb-20 flex flex-col items-center">
         <Link href="/" className="text-5xl md:text-6xl font-bold font-serif tracking-widest uppercase text-white hover:text-zinc-300 transition-colors">
@@ -23,7 +23,7 @@ export default function Footer() {
           <FooterLink href="#">Home</FooterLink>
           <FooterLink href="#">Atelier</FooterLink>
           <FooterLink href="#">Magazine</FooterLink>
-          <FooterLink href="#">Menu</FooterLink>
+          <FooterLink href="/menu">Menu</FooterLink>
           <FooterLink href="#locations">Locations</FooterLink>
           <FooterLink href="#">Contact</FooterLink>
         </div>

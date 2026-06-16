@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="fixed top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] z-[100] pointer-events-none">
@@ -14,7 +16,7 @@ export default function Navbar() {
         {/* Desktop Layout (Hidden on Mobile) */}
         <div className="hidden md:flex h-14 md:h-16">
           <div className="flex-1 border-r border-black flex">
-            <NavLink href="#" isActive>Home</NavLink>
+            <NavLink href="/" isActive={pathname === '/'}>Home</NavLink>
             <NavLink href="#">Atelier</NavLink>
             <NavLink href="#">Magazine</NavLink>
             <NavLink href="#">Franchise</NavLink>
@@ -27,7 +29,7 @@ export default function Navbar() {
           </div>
           
           <div className="flex-1 flex">
-            <NavLink href="#">Menu</NavLink>
+            <NavLink href="/menu" isActive={pathname === '/menu'}>Menu</NavLink>
             <NavLink href="#">Order Online</NavLink>
             <NavLink href="#" noBorder>Locations</NavLink>
           </div>
@@ -64,11 +66,11 @@ export default function Navbar() {
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
           <div className="md:hidden flex flex-col border-t border-black bg-white">
-            <MobileNavLink href="#" isActive>Home</MobileNavLink>
+            <MobileNavLink href="/" isActive={pathname === '/'} onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
             <MobileNavLink href="#">Atelier</MobileNavLink>
             <MobileNavLink href="#">Magazine</MobileNavLink>
             <MobileNavLink href="#">Franchise</MobileNavLink>
-            <MobileNavLink href="#">Menu</MobileNavLink>
+            <MobileNavLink href="/menu" isActive={pathname === '/menu'} onClick={() => setIsMenuOpen(false)}>Menu</MobileNavLink>
             <MobileNavLink href="#">Order Online</MobileNavLink>
             <MobileNavLink href="#">Locations</MobileNavLink>
             <MobileNavLink href="#" noBorder>Contact</MobileNavLink>
@@ -96,10 +98,11 @@ function NavLink({ href, children, noBorder, isActive }: { href: string; childre
   );
 }
 
-function MobileNavLink({ href, children, noBorder, isActive }: { href: string; children: React.ReactNode; noBorder?: boolean; isActive?: boolean }) {
+function MobileNavLink({ href, children, noBorder, isActive, onClick }: { href: string; children: React.ReactNode; noBorder?: boolean; isActive?: boolean; onClick?: () => void }) {
   return (
     <Link 
       href={href} 
+      onClick={onClick}
       className={`relative h-14 flex items-center justify-center transition-colors group
         ${noBorder ? '' : 'border-b border-black'} 
         ${isActive ? 'bg-[#86603A] text-white' : 'hover:bg-zinc-50'}`}

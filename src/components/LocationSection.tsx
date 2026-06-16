@@ -12,8 +12,8 @@ export default function LocationSection() {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   return (
-    <section id="locations" className="relative z-[70] w-full bg-[#F2EFEB] p-[10px] md:p-[20px]">
-      <div className="flex flex-col md:flex-row border border-black bg-white drop-shadow-2xl overflow-hidden min-h-[60vh] md:min-h-[70vh]">
+    <section id="locations" className="relative z-[70] w-full bg-[#F2EFEB] p-[10px] md:p-[20px] transform-gpu">
+      <div className="flex flex-col md:flex-row border border-black bg-white shadow-2xl overflow-hidden min-h-[60vh] md:min-h-[70vh] transform-gpu">
         
         {/* Map Side (Left) */}
         <div className="w-full md:w-1/2 border-b md:border-b-0 md:border-r border-black min-h-[40vh] md:min-h-[60vh] relative">

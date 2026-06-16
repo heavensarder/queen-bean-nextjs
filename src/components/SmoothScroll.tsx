@@ -31,7 +31,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
           const el = document.querySelector(id);
           if (el) {
             e.preventDefault();
-            lenis.scrollTo(el);
+            const offsetAttr = target.getAttribute('data-offset');
+            const offset = offsetAttr ? parseInt(offsetAttr, 10) : 0;
+            lenis.scrollTo(el, { offset });
           }
         }
       }
