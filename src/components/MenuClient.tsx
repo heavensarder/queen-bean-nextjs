@@ -256,7 +256,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
                       key={i}
                       className="inline-block text-xs lg:text-sm font-brandon font-semibold text-[#86603A] bg-[#86603A]/10 border border-[#86603A]/30 px-4 py-2 rounded-full"
                     >
-                      {addon.name} {addon.price}
+                      {addon.name} ${addon.price}
                     </span>
                   ))}
                 </div>
@@ -612,7 +612,7 @@ function DetailModal({
                         />
                         <span className="font-brandon font-semibold text-zinc-900">{addon.name}</span>
                       </div>
-                      <span className="font-brandon font-bold text-[#86603A]">{addon.price}</span>
+                      <span className="font-brandon font-bold text-[#86603A]">${addon.price}</span>
                     </label>
                   );
                 })}

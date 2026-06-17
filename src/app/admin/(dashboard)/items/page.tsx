@@ -401,14 +401,14 @@ export default function ItemsPage() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
-                      Price *
+                      Price ($) *
                     </label>
                     <input
                       type="text"
                       value={formPrice}
                       onChange={(e) => setFormPrice(e.target.value)}
                       className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
-                      placeholder="5.25"
+                      placeholder="$5.25"
                     />
                   </div>
                   <div>
@@ -488,7 +488,7 @@ export default function ItemsPage() {
                             setFormExtraIngredients(newIngredients);
                           }}
                           className="w-24 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
-                          placeholder="Price"
+                          placeholder="Price ($)"
                         />
                         <button
                           type="button"

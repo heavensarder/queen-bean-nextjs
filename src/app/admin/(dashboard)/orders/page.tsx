@@ -386,7 +386,7 @@ export default function OrdersPage() {
                               </p>
                               {item.add_ons && item.add_ons.length > 0 && (
                                 <p className="text-xs font-brandon text-zinc-500 mt-0.5">
-                                  + {item.add_ons.map((a) => a.name).join(', ')}
+                                  + {item.add_ons.map((a) => `${a.name} ($${a.price})`).join(', ')}
                                 </p>
                               )}
                             </div>
