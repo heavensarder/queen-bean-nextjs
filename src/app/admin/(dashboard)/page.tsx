@@ -36,7 +36,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <p className="font-brandon text-xs uppercase tracking-widest text-zinc-500 font-bold mb-2 relative z-10">Orders Last Hour</p>
@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
         ) : (
           <div className="divide-y divide-zinc-100">
             {recentOrders.map((order) => (
-              <div key={order.id} className="p-6 flex flex-col md:flex-row md:items-center justify-between hover:bg-zinc-50 transition-colors gap-4">
+              <div key={order.id} className="p-6 flex flex-col lg:flex-row lg:items-center justify-between hover:bg-zinc-50 transition-colors gap-4">
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <span className="font-anton text-lg text-zinc-900">{order.id}</span>
@@ -91,7 +91,7 @@ export default async function AdminDashboardPage() {
                     {order.customer_name} • {order.order_type} • ${order.total_amount}
                   </p>
                 </div>
-                <div className="text-left md:text-right">
+                <div className="text-left lg:text-right">
                   <p className="font-brandon text-xs text-zinc-400">
                     {new Date(order.created_at).toLocaleString('en-US', { 
                       month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' 

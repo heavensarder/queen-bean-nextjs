@@ -11,12 +11,12 @@ export default function Navbar() {
   const { itemCount, setIsCartOpen } = useCart();
 
   return (
-    <header className="fixed top-[10px] left-[10px] right-[10px] md:top-[20px] md:left-[20px] md:right-[20px] z-[100] pointer-events-none">
+    <header className="fixed top-[10px] left-[10px] right-[10px] lg:top-[20px] lg:left-[20px] lg:right-[20px] z-[100] pointer-events-none">
       {/* Changed font to brandon and removed uppercase */}
-      <div className="bg-white border border-black pointer-events-auto text-sm md:text-base tracking-wide font-brandon font-normal text-black drop-shadow-sm flex flex-col">
+      <div className="bg-white border border-black pointer-events-auto text-sm lg:text-base tracking-wide font-brandon font-normal text-black drop-shadow-sm flex flex-col">
         
         {/* Desktop Layout (Hidden on Mobile) */}
-        <div className="hidden md:flex h-14 md:h-16">
+        <div className="hidden lg:flex h-14 lg:h-16">
           <div className="flex-1 border-r border-black flex">
             <NavLink href="/" isActive={pathname === '/'}>Home</NavLink>
             <NavLink href="#" comingSoon>Atelier</NavLink>
@@ -25,7 +25,7 @@ export default function Navbar() {
           </div>
           
           <div className="flex items-center justify-center px-8 border-r border-black flex-[1.5]">
-            <Link href="/" className="text-2xl md:text-4xl font-bold font-serif tracking-widest whitespace-nowrap uppercase">
+            <Link href="/" className="text-2xl lg:text-4xl font-bold font-serif tracking-widest whitespace-nowrap uppercase">
               QUEEN BEAN
             </Link>
           </div>
@@ -37,6 +37,7 @@ export default function Navbar() {
               className="relative flex-1 flex flex-col items-center justify-center transition-colors group border-r border-black hover:bg-zinc-50"
             >
               <div className="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 <span>Cart</span>
                 {itemCount > 0 && (
                   <span className="bg-[#86603A] text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
@@ -51,7 +52,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Layout (Hidden on Desktop) */}
-        <div className="flex md:hidden flex-col w-full">
+        <div className="flex lg:hidden flex-col w-full">
           {/* Top Row: Logo */}
           <div className="h-12 border-b border-black flex items-center justify-center">
             <Link href="/" className="text-lg font-bold font-serif tracking-widest whitespace-nowrap uppercase">
@@ -92,7 +93,7 @@ export default function Navbar() {
 
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="md:hidden flex flex-col border-t border-black bg-white">
+          <div className="lg:hidden flex flex-col border-t border-black bg-white">
             <MobileNavLink href="/" isActive={pathname === '/'} onClick={() => setIsMenuOpen(false)}>Home</MobileNavLink>
             <MobileNavLink href="#" comingSoon>Atelier</MobileNavLink>
             <MobileNavLink href="#" comingSoon>Magazine</MobileNavLink>
@@ -116,7 +117,7 @@ function NavLink({ href, children, noBorder, isActive, comingSoon }: { href: str
     >
       <span>{children}</span>
       {comingSoon && (
-        <span className="text-sm md:text-base font-signature text-[#86603A] mt-[-2px] leading-none capitalize tracking-normal font-normal">Coming soon</span>
+        <span className="text-sm lg:text-base font-signature text-[#86603A] mt-[-2px] leading-none capitalize tracking-normal font-normal">Coming soon</span>
       )}
       {/* The bottom border hover effect */}
       {!isActive && (
@@ -137,7 +138,7 @@ function MobileNavLink({ href, children, noBorder, isActive, onClick, comingSoon
     >
       <span>{children}</span>
       {comingSoon && (
-        <span className="text-sm md:text-base font-signature text-[#86603A] mt-[-2px] leading-none capitalize tracking-normal font-normal">Coming soon</span>
+        <span className="text-sm lg:text-base font-signature text-[#86603A] mt-[-2px] leading-none capitalize tracking-normal font-normal">Coming soon</span>
       )}
       {/* The bottom border hover effect for mobile */}
       {!isActive && (

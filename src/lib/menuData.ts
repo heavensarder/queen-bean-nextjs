@@ -10,6 +10,8 @@ export interface MenuItem {
   sodium?: string;
   image: string;
   tags?: string[];
+  isAvailable?: boolean;
+  extraIngredients?: { name: string; price: string }[];
 }
 
 export interface MenuCategory {

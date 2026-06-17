@@ -43,6 +43,8 @@ async function main() {
       sodium VARCHAR(50) DEFAULT NULL,
       image VARCHAR(500) NOT NULL,
       tags JSON DEFAULT NULL,
+      is_available BOOLEAN DEFAULT TRUE,
+      extra_ingredients JSON DEFAULT NULL,
       order_index INT NOT NULL DEFAULT 0,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

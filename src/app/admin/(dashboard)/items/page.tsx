@@ -15,6 +15,8 @@ interface Item {
   sodium: string | null;
   image: string;
   tags: string[] | null;
+  is_available: boolean;
+  extra_ingredients: { name: string; price: string }[] | null;
   order_index: number;
 }
 
@@ -43,6 +45,8 @@ export default function ItemsPage() {
   const [formSodium, setFormSodium] = useState('');
   const [formImage, setFormImage] = useState('');
   const [formTags, setFormTags] = useState('');
+  const [formIsAvailable, setFormIsAvailable] = useState(true);
+  const [formExtraIngredients, setFormExtraIngredients] = useState<{name: string, price: string}[]>([]);
   const [imageMode, setImageMode] = useState<'upload' | 'url'>('url');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +85,8 @@ export default function ItemsPage() {
     setFormSodium('');
     setFormImage('');
     setFormTags('');
+    setFormIsAvailable(true);
+    setFormExtraIngredients([]);
     setImageMode('url');
     setShowModal(true);
   };
@@ -95,6 +101,8 @@ export default function ItemsPage() {
     setFormSodium(item.sodium || '');
     setFormImage(item.image);
     setFormTags(item.tags ? item.tags.join(', ') : '');
+    setFormIsAvailable(item.is_available ?? true);
+    setFormExtraIngredients(item.extra_ingredients || []);
     setImageMode('url');
     setShowModal(true);
   };
@@ -142,6 +150,8 @@ export default function ItemsPage() {
       sodium: formSodium || null,
       image: formImage,
       tags: tags.length > 0 ? tags : null,
+      is_available: formIsAvailable,
+      extra_ingredients: formExtraIngredients.length > 0 ? formExtraIngredients : null,
     };
 
     const method = editingItem ? 'PUT' : 'POST';
@@ -180,7 +190,7 @@ export default function ItemsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
           <h1 className="font-anton text-4xl uppercase tracking-wider text-zinc-900">
             Menu Items
@@ -195,12 +205,12 @@ export default function ItemsPage() {
             placeholder="Search items..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="px-4 py-3 bg-white border border-zinc-200 rounded-xl font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 w-full md:w-auto min-w-[200px]"
+            className="px-4 py-3 bg-white border border-zinc-200 rounded-xl font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 w-full lg:w-auto min-w-[200px]"
           />
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-3 bg-white border border-zinc-200 rounded-xl font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 w-full md:w-auto min-w-[200px]"
+            className="px-4 py-3 bg-white border border-zinc-200 rounded-xl font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 w-full lg:w-auto min-w-[200px]"
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -220,7 +230,7 @@ export default function ItemsPage() {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         {filteredItems.map((item, index) => (
           <motion.div
             key={item.id}
@@ -240,6 +250,11 @@ export default function ItemsPage() {
                 unoptimized={item.image.startsWith('http')}
               />
               <div className="absolute top-3 right-3 flex gap-1.5">
+                {!item.is_available && (
+                  <span className="px-2 py-1 bg-red-600/90 text-white text-[10px] font-brandon font-bold uppercase tracking-widest rounded-md backdrop-blur-sm">
+                    Unavailable
+                  </span>
+                )}
                 {item.tags?.map((tag) => (
                   <span
                     key={tag}
@@ -322,6 +337,20 @@ export default function ItemsPage() {
               </div>
 
               <div className="p-6 space-y-5">
+                {/* Is Available Toggle */}
+                <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-200 rounded-xl p-4">
+                  <input
+                    type="checkbox"
+                    id="is-available"
+                    checked={formIsAvailable}
+                    onChange={(e) => setFormIsAvailable(e.target.checked)}
+                    className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                  />
+                  <label htmlFor="is-available" className="font-brandon text-sm uppercase tracking-widest text-zinc-900 font-bold select-none cursor-pointer">
+                    Item is Available
+                  </label>
+                </div>
+
                 {/* Category */}
                 <div>
                   <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
@@ -420,6 +449,60 @@ export default function ItemsPage() {
                     className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
                     placeholder="GF, DF"
                   />
+                </div>
+
+                {/* Extra Ingredients */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="font-brandon text-xs uppercase tracking-widest text-zinc-500 font-bold">
+                      Extra Ingredients
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setFormExtraIngredients([...formExtraIngredients, { name: '', price: '' }])}
+                      className="text-xs font-brandon font-bold text-[#86603A] hover:underline"
+                    >
+                      + Add Ingredient
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    {formExtraIngredients.map((ingredient, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <input
+                          type="text"
+                          value={ingredient.name}
+                          onChange={(e) => {
+                            const newIngredients = [...formExtraIngredients];
+                            newIngredients[idx].name = e.target.value;
+                            setFormExtraIngredients(newIngredients);
+                          }}
+                          className="flex-1 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
+                          placeholder="Name (e.g. Extra Cheese)"
+                        />
+                        <input
+                          type="text"
+                          value={ingredient.price}
+                          onChange={(e) => {
+                            const newIngredients = [...formExtraIngredients];
+                            newIngredients[idx].price = e.target.value;
+                            setFormExtraIngredients(newIngredients);
+                          }}
+                          className="w-24 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
+                          placeholder="Price"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newIngredients = formExtraIngredients.filter((_, i) => i !== idx);
+                            setFormExtraIngredients(newIngredients);
+                          }}
+                          className="p-2 text-zinc-400 hover:text-red-600 transition-colors"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Image */}

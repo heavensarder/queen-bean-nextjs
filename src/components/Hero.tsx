@@ -24,7 +24,7 @@ function ScrollText({ children }: { children: React.ReactNode }) {
     <motion.div 
       ref={ref}
       style={{ filter: blur, opacity, y }}
-      className="text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] font-anton uppercase tracking-normal leading-[1.1] text-zinc-900 mix-blend-multiply text-center"
+      className="text-5xl md:text-6xl lg:text-7xl xl:text-[6rem] font-anton uppercase tracking-normal leading-[1.1] text-zinc-900 mix-blend-multiply text-center"
     >
       {children}
     </motion.div>
@@ -56,15 +56,15 @@ export default function Hero() {
       {/* Layer 2: Food Image (Sticky, Top Layer) */}
       {/* Reduced max-w to make it smaller and leave more space above it */}
       <div className="sticky top-0 h-screen w-full z-20 pointer-events-none -mt-[100vh]">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl flex flex-col items-center justify-end pb-4 md:pb-0 translate-y-[2%]">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl flex flex-col items-center justify-end pb-4 lg:pb-0 translate-y-[2%]">
           <motion.img 
             style={{ scale }}
             src="https://i.postimg.cc/gct4xyWZ/omelete-heroimage.png" 
             alt="Queen Bean Omelete"
-            className="w-full h-auto object-contain drop-shadow-2xl origin-bottom mb-2 md:mb-0"
+            className="w-full h-auto object-contain drop-shadow-2xl origin-bottom mb-2 lg:mb-0"
           />
           {/* Scroll down indicator for mobile */}
-          <div className="flex md:hidden flex-col items-center gap-1 pointer-events-auto animate-bounce">
+          <div className="flex lg:hidden flex-col items-center gap-1 pointer-events-auto animate-bounce">
              <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center bg-white/80 shadow-sm backdrop-blur-sm">
                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
              </div>
@@ -76,7 +76,7 @@ export default function Hero() {
       {/* Decreased text size and space between elements */}
       <div className="relative z-10 w-full -mt-[100vh]">
         <div 
-          className="hero-scroll-text flex flex-col items-center justify-start pt-[38vh] md:pt-[25vh] pb-[100vh] md:pb-[120vh] px-4"
+          className="hero-scroll-text flex flex-col items-center justify-start pt-[38vh] lg:pt-[25vh] pb-[100vh] lg:pb-[120vh] px-4"
         >
           
           <ScrollText>

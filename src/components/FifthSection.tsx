@@ -42,7 +42,7 @@ export default function FifthSection() {
 
   return (
     /* Shorter on mobile (350vh) vs desktop (500vh) to avoid endless scrolling on small screens */
-    <section ref={containerRef} className="relative z-[60] h-[350vh] md:h-[500vh] bg-[#F2EFEB] w-full">
+    <section ref={containerRef} className="relative z-[60] h-[350vh] lg:h-[500vh] bg-[#F2EFEB] w-full">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-black">
         
         {/* Background Video Layer */}
@@ -81,7 +81,7 @@ export default function FifthSection() {
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
-                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
+                  className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
                 >FOUR INGREDIENTS.</text>
                 <text 
                   x="500" y="300" 
@@ -89,7 +89,7 @@ export default function FifthSection() {
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
-                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
+                  className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
                 >MILLIONS OF LOAVES.</text>
                 <text 
                   x="500" y="380" 
@@ -97,7 +97,7 @@ export default function FifthSection() {
                   dominantBaseline="middle" 
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
-                  className="text-[44px] sm:text-[56px] md:text-[72px] tracking-tighter"
+                  className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
                 >ONE TRADITION.</text>
               </mask>
             </defs>
@@ -108,9 +108,9 @@ export default function FifthSection() {
         {/* Tour the Atelier Button */}
         <motion.div 
           style={{ opacity: buttonOpacity, display: buttonDisplay as any }}
-          className="absolute bottom-[8%] sm:bottom-[10%] md:bottom-[15%] z-20"
+          className="absolute bottom-[8%] md:bottom-[10%] lg:bottom-[15%] z-20"
         >
-          <button className="bg-white text-black border border-black px-6 sm:px-8 py-2.5 sm:py-3 text-[10px] sm:text-xs md:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors">
+          <button className="bg-white text-black border border-black px-6 md:px-8 py-2.5 md:py-3 text-[10px] md:text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors">
             Tour the Atelier
           </button>
         </motion.div>
@@ -118,16 +118,16 @@ export default function FifthSection() {
         {/* Pause/Play Button (Only shows when video is fully revealed) */}
         <motion.div 
           style={{ opacity: playButtonOpacity, pointerEvents: playButtonPointerEvents as any }}
-          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-12 md:right-12 z-30"
+          className="absolute bottom-4 right-4 md:bottom-6 md:right-6 lg:bottom-12 lg:right-12 z-30"
         >
           <button 
             onClick={togglePlay}
-            className="flex items-center gap-2 sm:gap-3 text-white hover:text-zinc-300 transition-colors"
+            className="flex items-center gap-2 md:gap-3 text-white hover:text-zinc-300 transition-colors"
           >
-            <span className="text-[10px] sm:text-xs md:text-sm tracking-widest font-bold">
+            <span className="text-[10px] md:text-xs lg:text-sm tracking-widest font-bold">
               {isPlaying ? 'Pause' : 'Play'}
             </span>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full border-2 bg-black/20 backdrop-blur-sm border-white flex items-center justify-center">
+            <div className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full border-2 bg-black/20 backdrop-blur-sm border-white flex items-center justify-center">
               {isPlaying ? (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
               ) : (

@@ -48,9 +48,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-100 flex flex-col md:flex-row font-brandon">
+    <div className="min-h-screen bg-zinc-100 flex flex-col lg:flex-row font-brandon">
       {/* Sidebar (Desktop) */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-zinc-200 sticky top-0 h-screen">
+      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-zinc-200 sticky top-0 h-screen">
         <div className="h-20 flex items-center justify-center border-b border-zinc-200">
           <Link href="/admin" className="text-2xl font-bold font-serif tracking-widest uppercase text-zinc-900">
             Queen Bean
@@ -92,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Mobile Header */}
-      <header className="md:hidden bg-white border-b border-zinc-200">
+      <header className="lg:hidden bg-white border-b border-zinc-200">
         <div className="h-16 flex items-center justify-between px-6">
           <Link href="/admin" className="text-xl font-bold font-serif tracking-widest uppercase text-zinc-900">
             QB Admin
@@ -147,7 +147,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 md:p-12 overflow-auto">
+      <main className="flex-1 p-6 lg:p-12 overflow-auto">
         {children}
       </main>
     </div>

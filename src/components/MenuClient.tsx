@@ -72,12 +72,12 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
     <main className="bg-[#F2EFEB] min-h-screen">
       <Navbar />
       {/* ── HERO ─────────────────────────────────────── */}
-      <section className="relative pt-40 pb-20 md:pt-48 md:pb-28 px-6 flex flex-col items-center justify-center text-center">
+      <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-28 px-6 flex flex-col items-center justify-center text-center">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-signature text-3xl md:text-5xl text-[#86603A] mb-2"
+          className="font-signature text-3xl lg:text-5xl text-[#86603A] mb-2"
         >
           Discover
         </motion.p>
@@ -85,7 +85,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-anton text-6xl md:text-9xl lg:text-[10rem] uppercase tracking-tight text-zinc-900 leading-[0.9]"
+          className="font-anton text-6xl lg:text-9xl xl:text-[10rem] uppercase tracking-tight text-zinc-900 leading-[0.9]"
         >
           Our Menu
         </motion.h1>
@@ -98,7 +98,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
       </section>
 
       {/* ── DESKTOP STICKY CATEGORY NAV ──────────────── */}
-      <div className="hidden md:block sticky top-[90px] z-[80] bg-[#F2EFEB]/95 backdrop-blur-md border-y border-zinc-300">
+      <div className="hidden lg:block sticky top-[90px] z-[80] bg-[#F2EFEB]/95 backdrop-blur-md border-y border-zinc-300">
         <div
           ref={navRef}
           className="flex overflow-x-auto no-scrollbar px-8 py-1"
@@ -130,7 +130,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
       </div>
 
       {/* ── MOBILE FLOATING CATEGORY BUTTON ──────────── */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[90]">
+      <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[90]">
         <button
           onClick={() => setIsMobileCategoryMenuOpen(true)}
           className="bg-black text-white px-6 py-3.5 rounded-full font-brandon uppercase tracking-[0.2em] text-[11px] font-bold shadow-2xl flex items-center gap-3 border border-zinc-800 hover:scale-105 transition-transform"
@@ -151,7 +151,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex flex-col justify-end md:hidden"
+            className="fixed inset-0 z-[200] flex flex-col justify-end lg:hidden"
           >
             {/* Backdrop */}
             <div 
@@ -217,21 +217,21 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
       </AnimatePresence>
 
       {/* ── MENU SECTIONS ────────────────────────────── */}
-      <div className="px-[10px] md:px-[20px] pb-16">
+      <div className="px-[10px] lg:px-[20px] pb-16">
         {initialCategories.map((category) => (
           <section
             key={category.id}
             id={category.id}
             ref={(el) => { sectionRefs.current[category.id] = el; }}
-            className="pt-16 md:pt-24"
+            className="pt-16 lg:pt-24"
           >
             {/* Category Header */}
-            <div className="mb-10 md:mb-14 px-4">
-              <h2 className="font-anton text-4xl md:text-6xl lg:text-7xl uppercase tracking-tight text-zinc-900">
+            <div className="mb-10 lg:mb-14 px-4">
+              <h2 className="font-anton text-4xl lg:text-6xl xl:text-7xl uppercase tracking-tight text-zinc-900">
                 {category.name}
               </h2>
               {category.subtitle && (
-                <p className="font-signature text-xl md:text-2xl text-[#86603A] mt-2">
+                <p className="font-signature text-xl lg:text-2xl text-[#86603A] mt-2">
                   {category.subtitle}
                 </p>
               )}
@@ -241,7 +241,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
                   {category.notes.map((note, i) => (
                     <span
                       key={i}
-                      className="inline-block text-xs md:text-sm font-brandon text-zinc-600 bg-white/70 border border-zinc-300 px-4 py-2 rounded-full"
+                      className="inline-block text-xs lg:text-sm font-brandon text-zinc-600 bg-white/70 border border-zinc-300 px-4 py-2 rounded-full"
                     >
                       {note}
                     </span>
@@ -254,7 +254,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
                   {category.addOns.map((addon, i) => (
                     <span
                       key={i}
-                      className="inline-block text-xs md:text-sm font-brandon font-semibold text-[#86603A] bg-[#86603A]/10 border border-[#86603A]/30 px-4 py-2 rounded-full"
+                      className="inline-block text-xs lg:text-sm font-brandon font-semibold text-[#86603A] bg-[#86603A]/10 border border-[#86603A]/30 px-4 py-2 rounded-full"
                     >
                       {addon.name} {addon.price}
                     </span>
@@ -264,9 +264,9 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
             </div>
 
             {/* Items Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-[1px] bg-transparent md:bg-black md:border md:border-black px-4 md:px-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-[1px] bg-transparent lg:bg-black lg:border lg:border-black px-4 lg:px-0">
               {category.items.map((item) => (
-                <div key={item.id} className="w-full relative group bg-white cursor-pointer overflow-hidden rounded-2xl md:rounded-none shadow-[0_8px_30px_rgb(0,0,0,0.08)] md:shadow-none border border-zinc-200 md:border-none">
+                <div key={item.id} className="w-full relative group bg-white cursor-pointer overflow-hidden rounded-2xl lg:rounded-none shadow-[0_8px_30px_rgb(0,0,0,0.08)] lg:shadow-none border border-zinc-200 lg:border-none">
                   <ItemCard
                     item={item}
                     categoryName={category.name}
@@ -308,7 +308,7 @@ function ItemCard({
   return (
     <div className="w-full h-full" onClick={onInfoClick}>
       {/* Image */}
-      <div className="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-[4/3] lg:aspect-[4/3] overflow-hidden">
         <Image
           src={item.image}
           alt={item.name}
@@ -320,7 +320,7 @@ function ItemCard({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
 
         {/* Category Label */}
-        <span className="absolute top-4 left-4 text-[10px] md:text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-white/70">
+        <span className="absolute top-4 left-4 text-[10px] lg:text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-white/70">
           {categoryName}
         </span>
 
@@ -354,12 +354,12 @@ function ItemCard({
         </button>
 
         {/* Item Name & Price */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-          <h3 className="font-brandon font-bold text-sm md:text-base text-white leading-tight line-clamp-2">
+        <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-5">
+          <h3 className="font-brandon font-bold text-sm lg:text-base text-white leading-tight line-clamp-2">
             {item.name}
           </h3>
           <div className="flex items-center gap-3 mt-1.5">
-            <span className="font-brandon font-bold text-base md:text-lg text-white">
+            <span className="font-brandon font-bold text-base lg:text-lg text-white">
               ${item.price}
             </span>
             {item.calories && (
@@ -420,6 +420,12 @@ function DetailModal({
     (sum, addon) => sum + parseFloat(addon.price.replace(/[^0-9.]/g, '') || '0'),
     0
   );
+
+  const combinedAddOns = [
+    ...(category.addOns || []),
+    ...(item.extraIngredients || []),
+  ];
+
   const totalItemPrice = (basePrice + addOnsTotal) * quantity;
 
   return (
@@ -428,7 +434,7 @@ function DetailModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[200] flex items-end lg:items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-end xl:items-center justify-center"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -440,17 +446,17 @@ function DetailModal({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="relative w-full h-[92vh] lg:h-full flex flex-col lg:flex-row bg-white overflow-auto rounded-t-3xl lg:rounded-none shadow-2xl"
+        className="relative w-full h-[92vh] xl:h-full flex flex-col xl:flex-row bg-white overflow-auto rounded-t-3xl xl:rounded-none shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         data-lenis-prevent="true"
       >
         {/* Mobile Drag Handle Indicator */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/40 backdrop-blur-md rounded-full z-20 lg:hidden shadow-sm" />
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/40 backdrop-blur-md rounded-full z-20 xl:hidden shadow-sm" />
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center hover:bg-[#86603A] hover:text-white transition-colors group"
+          className="absolute top-6 right-6 z-10 w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center hover:bg-[#86603A] hover:text-white transition-colors group"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className="group-hover:rotate-90 transition-transform">
             <path d="M18 6L6 18M6 6l12 12" />
@@ -458,7 +464,7 @@ function DetailModal({
         </button>
 
         {/* Image Side */}
-        <div className="relative w-full lg:w-[60%] h-[35vh] md:h-[45vh] lg:h-full shrink-0">
+        <div className="relative w-full xl:w-[60%] h-[35vh] lg:h-[45vh] xl:h-full shrink-0">
           <Image
             src={item.image}
             alt={item.name}
@@ -468,17 +474,17 @@ function DetailModal({
             priority
           />
           {/* Mobile: gradient for readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent lg:hidden" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent xl:hidden" />
         </div>
 
         {/* Details Side */}
-        <div className="flex-1 flex flex-col justify-start lg:justify-center p-6 md:p-12 lg:p-16 overflow-y-auto">
+        <div className="flex-1 flex flex-col justify-start xl:justify-center p-6 lg:p-12 xl:p-16 overflow-y-auto">
           {/* Category Label */}
           <motion.p
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xs md:text-sm tracking-[0.25em] uppercase font-brandon font-semibold text-zinc-400 mb-2"
+            className="text-xs lg:text-sm tracking-[0.25em] uppercase font-brandon font-semibold text-zinc-400 mb-2"
           >
             {category.name}
           </motion.p>
@@ -488,7 +494,7 @@ function DetailModal({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="font-anton text-3xl md:text-4xl lg:text-5xl uppercase tracking-tight text-zinc-900 leading-tight"
+            className="font-anton text-3xl lg:text-4xl xl:text-5xl uppercase tracking-tight text-zinc-900 leading-tight"
           >
             {item.name}
           </motion.h2>
@@ -498,7 +504,7 @@ function DetailModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="font-signature text-2xl md:text-3xl text-[#86603A] mt-1 mb-4"
+            className="font-signature text-2xl lg:text-3xl text-[#86603A] mt-1 mb-4"
           >
             Queen Bean
           </motion.p>
@@ -509,7 +515,7 @@ function DetailModal({
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.45 }}
-              className="mt-6 text-base md:text-lg font-brandon text-zinc-600 leading-relaxed"
+              className="mt-6 text-base lg:text-lg font-brandon text-zinc-600 leading-relaxed"
             >
               {item.description}
             </motion.p>
@@ -522,7 +528,7 @@ function DetailModal({
             transition={{ delay: 0.5 }}
             className="mt-6 flex items-baseline gap-3"
           >
-            <span className="font-anton text-3xl md:text-4xl text-zinc-900">
+            <span className="font-anton text-3xl lg:text-4xl text-zinc-900">
               ${item.price}
             </span>
           </motion.div>
@@ -578,8 +584,8 @@ function DetailModal({
             </motion.div>
           )}
 
-          {/* Add-ons from category */}
-          {category.addOns && category.addOns.length > 0 && (
+          {/* Add-ons from category & Extra Ingredients */}
+          {combinedAddOns.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -587,10 +593,10 @@ function DetailModal({
               className="mt-6 border-t border-zinc-200 pt-6"
             >
               <p className="text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-zinc-400 mb-3">
-                Add-ons
+                Extras & Add-ons
               </p>
               <div className="flex flex-col gap-3">
-                {category.addOns.map((addon, i) => {
+                {combinedAddOns.map((addon, i) => {
                   const isSelected = selectedAddOns.some((a) => a.name === addon.name);
                   return (
                     <label

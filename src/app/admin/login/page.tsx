@@ -17,7 +17,7 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-zinc-200"
+        className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 lg:p-12 border border-zinc-200"
       >
         <div className="text-center mb-10">
           <p className="font-signature text-3xl text-[#86603A] mb-2">Queen Bean</p>
