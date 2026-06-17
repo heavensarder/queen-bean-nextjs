@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { type MenuItem, type MenuCategory } from '@/lib/menuData';
@@ -10,11 +10,25 @@ import { useCart, type CartAddOn } from '@/components/CartContext';
 
 export default function MenuClient({ initialCategories }: { initialCategories: MenuCategory[] }) {
   const [activeCategory, setActiveCategory] = useState(initialCategories[0].id);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<{ item: MenuItem; category: MenuCategory } | null>(null);
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
   const navRef = useRef<HTMLDivElement>(null);
   const isScrollingToCategory = useRef(false);
+
+  const displayCategories = useMemo(() => {
+    if (searchQuery.trim() === '') return initialCategories;
+    const query = searchQuery.toLowerCase();
+    return initialCategories.map(category => ({
+      ...category,
+      items: category.items.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.description?.toLowerCase().includes(query) ||
+        item.tags?.some(tag => tag.toLowerCase().includes(query))
+      )
+    })).filter(category => category.items.length > 0);
+  }, [initialCategories, searchQuery]);
 
   // Scroll listener to update active category
   useEffect(() => {
@@ -25,8 +39,8 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
         // The sticky header takes up some space. We check if a section's top is above this line.
         const triggerLine = 200; 
 
-        let currentActive = initialCategories[0].id;
-        for (const category of initialCategories) {
+        let currentActive = displayCategories.length > 0 ? displayCategories[0].id : '';
+        for (const category of displayCategories) {
           const el = sectionRefs.current[category.id];
           if (el) {
             const rect = el.getBoundingClientRect();
@@ -95,6 +109,35 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
           transition={{ duration: 0.6, delay: 0.5 }}
           className="w-24 h-[3px] bg-[#86603A] mt-8 origin-left"
         />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-12 w-full max-w-md relative"
+        >
+          <input
+            type="text"
+            placeholder="Search menu..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-transparent border-b-2 border-zinc-300 focus:border-[#86603A] px-10 py-3 font-brandon text-lg text-center focus:outline-none transition-colors placeholder:text-zinc-400"
+          />
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          )}
+        </motion.div>
       </section>
 
       {/* ── DESKTOP STICKY CATEGORY NAV ──────────────── */}
@@ -103,7 +146,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
           ref={navRef}
           className="flex overflow-x-auto no-scrollbar px-8 py-1"
         >
-          {initialCategories.map((cat) => (
+          {displayCategories.map((cat) => (
             <a
               key={cat.id}
               data-cat={cat.id}
@@ -140,7 +183,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
-          Food Category Menu / {initialCategories.find(c => c.id === activeCategory)?.name || ''}
+          Food Category Menu / {displayCategories.find(c => c.id === activeCategory)?.name || (displayCategories.length > 0 ? displayCategories[0].name : 'Search')}
         </button>
       </div>
 
@@ -183,7 +226,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
               </div>
 
               <div className="flex-1 overflow-y-auto px-6 py-4 no-scrollbar" data-lenis-prevent="true">
-                {initialCategories.map((cat, idx) => (
+                {displayCategories.map((cat, idx) => (
                   <motion.a
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -218,7 +261,12 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
 
       {/* ── MENU SECTIONS ────────────────────────────── */}
       <div className="px-[10px] lg:px-[20px] pb-16">
-        {initialCategories.map((category) => (
+        {displayCategories.length === 0 ? (
+          <div className="py-20 text-center">
+            <h3 className="font-anton text-2xl text-zinc-400 uppercase tracking-widest">No items found</h3>
+            <p className="font-brandon text-zinc-500 mt-2">Try adjusting your search</p>
+          </div>
+        ) : displayCategories.map((category) => (
           <section
             key={category.id}
             id={category.id}

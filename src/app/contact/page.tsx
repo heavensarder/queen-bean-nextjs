@@ -143,7 +143,7 @@ export default function ContactPage() {
           >
             {/* Info Box */}
             <div className="bg-[#1A1A1A] text-white p-8 lg:p-12 shadow-xl">
-              <h2 className="font-anton text-3xl uppercase tracking-widest text-[#F4B41A] mb-8">Visit Our Bakery</h2>
+              <h2 className="font-anton text-3xl uppercase tracking-widest text-[#86603A] mb-8">Visit Our Bakery</h2>
               
               <div className="space-y-8 font-brandon text-sm lg:text-base text-zinc-300">
                 {/* Location */}
