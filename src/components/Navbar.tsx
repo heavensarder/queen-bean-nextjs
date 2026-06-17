@@ -47,7 +47,7 @@ export default function Navbar() {
               </div>
               <span className="absolute bottom-0 left-0 w-full h-[4px] bg-transparent group-hover:bg-[#86603A] transition-colors" />
             </button>
-            <NavLink href="#" noBorder>Contact</NavLink>
+            <NavLink href="/contact" noBorder>Contact</NavLink>
           </div>
         </div>
 
@@ -84,7 +84,7 @@ export default function Navbar() {
                 </span>
               )}
             </button>
-            <Link href="#" className="flex-1 flex items-center justify-center gap-2 hover:bg-zinc-100 transition-colors">
+            <Link href="/contact" className="flex-1 flex items-center justify-center gap-2 hover:bg-zinc-100 transition-colors">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
               <span>Contact</span>
             </Link>
@@ -99,7 +99,7 @@ export default function Navbar() {
             <MobileNavLink href="#" comingSoon>Magazine</MobileNavLink>
             <MobileNavLink href="#" comingSoon>Franchise</MobileNavLink>
             <MobileNavLink href="/menu" isActive={pathname === '/menu'} onClick={() => setIsMenuOpen(false)}>Food Menu</MobileNavLink>
-            <MobileNavLink href="#" noBorder>Contact</MobileNavLink>
+            <MobileNavLink href="/contact" noBorder>Contact</MobileNavLink>
           </div>
         )}
       </div>

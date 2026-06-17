@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
 
 export default function FifthSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -110,9 +111,9 @@ export default function FifthSection() {
           style={{ opacity: buttonOpacity, display: buttonDisplay as any }}
           className="absolute bottom-[8%] md:bottom-[10%] lg:bottom-[15%] z-20"
         >
-          <button className="bg-white text-black border border-black px-6 md:px-8 py-2.5 md:py-3 text-[10px] md:text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors">
+          <Link href="#" className="bg-white text-black border border-black px-6 md:px-8 py-2.5 md:py-3 text-[10px] md:text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors text-center inline-block">
             Tour the Atelier
-          </button>
+          </Link>
         </motion.div>
 
         {/* Pause/Play Button (Only shows when video is fully revealed) */}

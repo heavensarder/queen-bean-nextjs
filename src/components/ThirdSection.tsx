@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
 
 export default function ThirdSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,9 +44,9 @@ export default function ThirdSection() {
               Our restaurants, much like the vibrant community around them, embody a blend of new and contemporary design with traditional bakery roots.
             </p>
             <div className="flex flex-row gap-3 lg:gap-4">
-              <button className="bg-black text-white px-8 lg:px-10 py-3 lg:py-4 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors">
+              <Link href="#locations" className="bg-black text-white px-8 lg:px-10 py-3 lg:py-4 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center inline-block">
                 Find bakery
-              </button>
+              </Link>
             </div>
           </div>
         </div>

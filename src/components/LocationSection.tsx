@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function LocationSection() {
   const [showHours, setShowHours] = useState(false);
@@ -110,9 +111,9 @@ export default function LocationSection() {
               >
                 {showHours ? 'See Info' : 'See Hours'}
               </button>
-              <button className="bg-black text-white px-8 py-3 text-xs tracking-widest font-bold hover:bg-zinc-800 transition-colors ml-auto md:ml-0">
+              <Link href="/menu" className="bg-black text-white px-8 py-3 text-xs tracking-widest font-bold hover:bg-zinc-800 transition-colors ml-auto md:ml-0 inline-block text-center">
                 ORDER ONLINE
-              </button>
+              </Link>
             </div>
           </div>
         </div>

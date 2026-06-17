@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function FourthSection() {
   return (
     <section className="relative z-50 w-full bg-[#F2EFEB] pt-16 lg:pt-24 pb-0 overflow-hidden">
@@ -14,9 +16,9 @@ export default function FourthSection() {
         <p className="text-sm lg:text-base text-zinc-700 leading-relaxed mb-8 lg:mb-10 font-medium max-w-2xl">
           Our menu celebrates natural, honest ingredients, prepared fresh every day. And at the heart of it all is the bread that brings everything together.
         </p>
-        <button className="bg-black text-white px-8 lg:px-10 py-3 lg:py-4 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors">
+        <Link href="/menu" className="bg-black text-white px-8 lg:px-10 py-3 lg:py-4 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center inline-block">
           Get Inspired by our Menu
-        </button>
+        </Link>
       </div>
 
       {/* Exact Match Images Row */}

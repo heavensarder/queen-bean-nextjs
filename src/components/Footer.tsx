@@ -25,7 +25,7 @@ export default function Footer() {
           <FooterLink href="#">Magazine</FooterLink>
           <FooterLink href="/menu">Menu</FooterLink>
           <FooterLink href="#locations">Locations</FooterLink>
-          <FooterLink href="#">Contact</FooterLink>
+          <FooterLink href="/contact">Contact</FooterLink>
         </div>
 
         {/* Column 2: Follow Us */}

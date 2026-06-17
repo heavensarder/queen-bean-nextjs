@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SecondSection() {
   return (
     <section className="sticky top-0 z-30 w-full p-[10px] lg:p-[20px] -mt-[100vh]">
@@ -19,12 +21,12 @@ export default function SecondSection() {
               balance of flavor and well-being.
             </p>
             <div className="flex flex-row gap-3 lg:gap-4">
-              <button className="bg-black text-white px-6 lg:px-8 py-2.5 lg:py-3 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors">
+              <Link href="#" className="bg-black text-white px-6 lg:px-8 py-2.5 lg:py-3 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-800 transition-colors text-center inline-block">
                 Learn more
-              </button>
-              <button className="bg-white text-black border border-black px-6 lg:px-8 py-2.5 lg:py-3 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors">
+              </Link>
+              <Link href="/menu" className="bg-white text-black border border-black px-6 lg:px-8 py-2.5 lg:py-3 text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors text-center inline-block">
                 View menu
-              </button>
+              </Link>
             </div>
           </div>
         </div>
