@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useCart } from './CartContext';
 
 export default function Navbar() {
@@ -24,9 +25,34 @@ export default function Navbar() {
             <NavLink href="#" comingSoon>Franchise</NavLink>
           </div>
           
-          <div className="flex items-center justify-center px-8 border-r border-black flex-[1.5]">
-            <Link href="/" className="text-2xl lg:text-4xl font-bold font-serif tracking-widest whitespace-nowrap uppercase">
-              QUEEN BEAN
+          <div className="flex items-center justify-center px-4 lg:px-8 border-r border-black flex-[1.5] overflow-hidden">
+            <Link href="/" className="relative w-[280px] h-[50px] flex items-center">
+              <motion.div 
+                className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
+                animate={{ x: [120, 120, 0, 0, 0, 0, 120, 120], scale: [1.6, 1.6, 1, 1, 1, 1, 1.6, 1.6] }}
+                transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
+              >
+                <img 
+                  src="https://i.postimg.cc/Yqr4m6jh/queen-been-icon.png" 
+                  alt="Queen Bean Icon" 
+                  className="w-10 h-10 object-contain" 
+                />
+              </motion.div>
+
+              <div className="absolute left-[52px] right-0 overflow-hidden h-full flex items-center">
+                <motion.div 
+                  animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
+                  transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
+                  className="w-full"
+                >
+                  <span 
+                    className="text-3xl font-bold tracking-widest whitespace-nowrap uppercase block"
+                    style={{ fontFamily: '"Hatsch Sans", sans-serif', color: '#513626' }}
+                  >
+                    QUEEN BEAN
+                  </span>
+                </motion.div>
+              </div>
             </Link>
           </div>
           
@@ -53,10 +79,34 @@ export default function Navbar() {
 
         {/* Mobile Layout (Hidden on Desktop) */}
         <div className="flex lg:hidden flex-col w-full">
-          {/* Top Row: Logo */}
-          <div className="h-12 border-b border-black flex items-center justify-center">
-            <Link href="/" className="text-lg font-bold font-serif tracking-widest whitespace-nowrap uppercase">
-              QUEEN BEAN
+          <div className="h-16 border-b border-black flex items-center justify-center overflow-hidden">
+            <Link href="/" className="relative w-[220px] h-[40px] flex items-center">
+              <motion.div 
+                className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
+                animate={{ x: [96, 96, 0, 0, 0, 0, 96, 96], scale: [1.6, 1.6, 1, 1, 1, 1, 1.6, 1.6] }}
+                transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
+              >
+                <img 
+                  src="https://i.postimg.cc/Yqr4m6jh/queen-been-icon.png" 
+                  alt="Queen Bean Icon" 
+                  className="w-7 h-7 object-contain" 
+                />
+              </motion.div>
+
+              <div className="absolute left-[36px] right-0 overflow-hidden h-full flex items-center">
+                <motion.div 
+                  animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
+                  transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
+                  className="w-full"
+                >
+                  <span 
+                    className="text-xl font-bold tracking-widest whitespace-nowrap uppercase block"
+                    style={{ fontFamily: '"Hatsch Sans", sans-serif', color: '#513626' }}
+                  >
+                    QUEEN BEAN
+                  </span>
+                </motion.div>
+              </div>
             </Link>
           </div>
           {/* Bottom Row: Menu Toggle, Cart & Locations */}
