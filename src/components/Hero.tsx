@@ -31,7 +31,7 @@ function ScrollText({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function Hero() {
+export default function Hero({ content }: { content?: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Track the scroll progress of the entire Hero section
@@ -49,7 +49,7 @@ export default function Hero() {
       <div className="sticky top-0 h-screen w-full overflow-hidden z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url("https://i.postimg.cc/J0HXDkNG/hero-background.jpg")' }}
+          style={{ backgroundImage: `url("${content?.backgroundImage}")` }}
         />
       </div>
 
@@ -59,7 +59,7 @@ export default function Hero() {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl flex flex-col items-center justify-end pb-4 lg:pb-0 translate-y-[2%]">
           <motion.img 
             style={{ scale }}
-            src="https://i.postimg.cc/gct4xyWZ/omelete-heroimage.png" 
+            src={content?.foodImage} 
             alt="Queen Bean Omelete"
             className="w-full h-auto object-contain drop-shadow-2xl origin-bottom mb-2 lg:mb-0"
           />
@@ -79,25 +79,11 @@ export default function Hero() {
           className="hero-scroll-text flex flex-col items-center justify-start pt-[38vh] lg:pt-[25vh] pb-[100vh] lg:pb-[120vh] px-4"
         >
           
-          <ScrollText>
-            THIS IS NOT<br />JUST FOOD.
-          </ScrollText>
-          
-          <ScrollText>
-            THIS IS OUR<br />PHILOSOPHY.
-          </ScrollText>
-          
-          <ScrollText>
-            IT'S ABOUT<br />TIME.
-          </ScrollText>
-          
-          <ScrollText>
-            TIME FOR SLOWING<br />DOWN.
-          </ScrollText>
-          
-          <ScrollText>
-            TIME FOR<br />CONNECTION.
-          </ScrollText>
+          {content?.texts?.map((text: string, idx: number) => (
+            <ScrollText key={idx}>
+              <span dangerouslySetInnerHTML={{ __html: text }} />
+            </ScrollText>
+          ))}
           
         </div>
       </div>

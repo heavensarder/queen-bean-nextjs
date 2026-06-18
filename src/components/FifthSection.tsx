@@ -4,10 +4,18 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 
-export default function FifthSection() {
+export default function FifthSection({ content }: { content?: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
+
+  // Use defaults if content is not provided
+  const text1 = content?.text1 || "FOUR INGREDIENTS.";
+  const text2 = content?.text2 || "MILLIONS OF LOAVES.";
+  const text3 = content?.text3 || "ONE TRADITION.";
+  const button1Text = content?.button1Text || "Tour the Atelier";
+  const button1Link = content?.button1Link || "#";
+  const videoUrl = content?.videoUrl || "https://videos.pexels.com/video-files/7405929/7405929-uhd_2560_1440_24fps.mp4";
 
   // Track scroll progress
   const { scrollYProgress } = useScroll({
@@ -56,7 +64,7 @@ export default function FifthSection() {
             playsInline 
             className="w-full h-full object-cover"
           >
-            <source src="https://videos.pexels.com/video-files/7405929/7405929-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+            <source src={videoUrl} type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-black/10" />
         </div>
@@ -83,7 +91,7 @@ export default function FifthSection() {
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
                   className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
-                >FOUR INGREDIENTS.</text>
+                >{text1}</text>
                 <text 
                   x="500" y="300" 
                   textAnchor="middle" 
@@ -91,7 +99,7 @@ export default function FifthSection() {
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
                   className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
-                >MILLIONS OF LOAVES.</text>
+                >{text2}</text>
                 <text 
                   x="500" y="380" 
                   textAnchor="middle" 
@@ -99,7 +107,7 @@ export default function FifthSection() {
                   fontFamily="var(--font-anton), Anton, sans-serif"
                   fill="black"
                   className="text-[44px] md:text-[56px] lg:text-[72px] tracking-tighter"
-                >ONE TRADITION.</text>
+                >{text3}</text>
               </mask>
             </defs>
             <rect width="1000" height="600" fill="#F2EFEB" mask="url(#video-mask)" />
@@ -111,8 +119,8 @@ export default function FifthSection() {
           style={{ opacity: buttonOpacity, display: buttonDisplay as any }}
           className="absolute bottom-[8%] md:bottom-[10%] lg:bottom-[15%] z-20"
         >
-          <Link href="#" className="bg-white text-black border border-black px-6 md:px-8 py-2.5 md:py-3 text-[10px] md:text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors text-center inline-block">
-            Tour the Atelier
+          <Link href={button1Link} className="bg-white text-black border border-black px-6 md:px-8 py-2.5 md:py-3 text-[10px] md:text-xs lg:text-sm tracking-widest font-bold hover:bg-zinc-100 transition-colors text-center inline-block">
+            {button1Text}
           </Link>
         </motion.div>
 
