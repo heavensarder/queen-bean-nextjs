@@ -5,22 +5,41 @@ import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 
 export default function ContactPage() {
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [errorMsg, setErrorMsg] = useState('');
 
   const phillyTimeStr = new Date().toLocaleString("en-US", { timeZone: "America/New_York" });
   const todayIndex = new Date(phillyTimeStr).getDay(); // 0 is Sunday
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState('submitting');
-    // Simulate network request
-    setTimeout(() => {
-      setFormState('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setFormState('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setFormState('idle'), 5000);
+      } else {
+        const data = await res.json();
+        setErrorMsg(data.error || 'Failed to send message. Please try again.');
+        setFormState('error');
+        setTimeout(() => setFormState('idle'), 5000);
+      }
+    } catch {
+      setErrorMsg('Could not connect to the server. Please try again later.');
+      setFormState('error');
       setTimeout(() => setFormState('idle'), 5000);
-    }, 1500);
+    }
   };
 
   return (
@@ -109,7 +128,7 @@ export default function ContactPage() {
               <div className="pt-4 flex items-center gap-6">
                 <button 
                   type="submit" 
-                  disabled={formState !== 'idle'}
+                  disabled={formState === 'submitting' || formState === 'success'}
                   className="bg-black text-white px-10 py-4 font-brandon text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#86603A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 relative overflow-hidden group"
                 >
                   <span className="relative z-10">{formState === 'submitting' ? 'Sending...' : 'Send Message'}</span>
@@ -127,7 +146,17 @@ export default function ContactPage() {
                     animate={{ opacity: 1, x: 0 }}
                     className="text-green-600 font-brandon font-bold text-sm"
                   >
-                    Thanks! We'll be in touch soon.
+                    Thanks! We&apos;ll be in touch soon.
+                  </motion.p>
+                )}
+                
+                {formState === 'error' && (
+                  <motion.p 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="text-red-600 font-brandon font-bold text-sm"
+                  >
+                    {errorMsg}
                   </motion.p>
                 )}
               </div>
