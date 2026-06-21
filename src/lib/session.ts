@@ -27,7 +27,7 @@ export async function createSession() {
   cookieStore.set('session', session, {
     expires,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.SECURE_COOKIES === 'true', // Changed to allow HTTP testing
     sameSite: 'lax',
     path: '/',
   });
