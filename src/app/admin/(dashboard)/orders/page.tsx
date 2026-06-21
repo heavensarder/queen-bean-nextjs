@@ -399,9 +399,21 @@ export default function OrdersPage() {
                               )}
                             </div>
                           </div>
-                          <span className="font-brandon font-bold text-zinc-900 text-base">
-                            ${parseFloat(item.price_at_time || '0').toFixed(2)}
-                          </span>
+                          <div className="text-right">
+                            {item.quantity > 1 || (item.add_ons && item.add_ons.length > 0) ? (
+                              <div className="flex flex-col items-end">
+                                <span className="text-[10px] font-brandon font-bold text-zinc-400 mb-0.5 whitespace-nowrap">
+                                  {(item.add_ons && item.add_ons.length > 0)
+                                    ? `($${(parseFloat(item.price_at_time || '0') / item.quantity - item.add_ons.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0)).toFixed(2)} + $${item.add_ons.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0).toFixed(2)})`
+                                    : `$${(parseFloat(item.price_at_time || '0') / item.quantity).toFixed(2)}`}
+                                  {item.quantity > 1 ? ` × ${item.quantity}` : ''} =
+                                </span>
+                                <span className="font-anton text-lg text-zinc-900">${parseFloat(item.price_at_time || '0').toFixed(2)}</span>
+                              </div>
+                            ) : (
+                              <span className="font-anton text-lg text-zinc-900">${parseFloat(item.price_at_time || '0').toFixed(2)}</span>
+                            )}
+                          </div>
                         </div>
                         {item.special_instructions && (
                           <div className="ml-11 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 mt-2 shadow-sm">
