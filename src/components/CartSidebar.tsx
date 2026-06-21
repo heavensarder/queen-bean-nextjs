@@ -361,31 +361,40 @@ export default function CartSidebar() {
                   {/* Order Summary in Checkout */}
                   <div className="mb-4 pb-4 border-b border-zinc-200 border-dashed">
                     <h4 className="font-brandon font-bold text-xs uppercase tracking-widest text-zinc-500 mb-3">Order Summary</h4>
-                    <div className="space-y-2.5">
+                    <div className="space-y-4">
                       {cartItems.map((item) => {
                         const itemTotal = (item.price + item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0)) * item.quantity;
                         return (
-                          <div key={item.id} className="flex justify-between items-start text-sm font-brandon">
-                            <div className="flex-1 pr-4">
-                              <span className="font-bold text-zinc-900">{item.quantity}× {item.name}</span>
-                              {item.size && <span className="text-zinc-500"> ({item.size})</span>}
-                              {item.addOns.length > 0 && (
-                                <div className="text-xs text-zinc-500 mt-0.5">
-                                  + {item.addOns.map(a => a.name).join(', ')}
+                          <div key={item.id} className="text-sm font-brandon pb-4 border-b border-zinc-100 last:border-0 last:pb-0">
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1 pr-4">
+                                <div className="flex items-baseline gap-2">
+                                  <span className="font-anton text-zinc-900 text-base">{item.quantity}</span>
+                                  <span className="font-bold text-zinc-900 text-base tracking-wide">{item.name}</span>
+                                  {item.size && <span className="text-zinc-400 text-xs tracking-widest uppercase">{item.size}</span>}
                                 </div>
-                              )}
-                            </div>
-                            <div className="text-right flex flex-col items-end justify-start">
-                              {item.quantity > 1 || item.addOns.length > 0 ? (
-                                <span className="text-[10px] text-zinc-400 font-normal mb-0.5 whitespace-nowrap">
-                                  {item.addOns.length > 0 
-                                    ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)} =` 
-                                    : `${item.quantity} × $${item.price.toFixed(2)} =`}
+                                
+                                {item.addOns.length > 0 && (
+                                  <div className="text-xs text-zinc-500 mt-1.5 pl-4 border-l-2 border-[#86603A]/20 flex flex-col gap-0.5">
+                                    {item.addOns.map(a => (
+                                      <span key={a.name}>+ {a.name}</span>
+                                    ))}
+                                  </div>
+                                )}
+                                
+                                {(item.quantity > 1 || item.addOns.length > 0) ? (
+                                  <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-2 pl-4">
+                                    {item.addOns.length > 0 
+                                      ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)}`
+                                      : `${item.quantity} × $${item.price.toFixed(2)}`}
+                                  </div>
+                                ) : null}
+                              </div>
+                              <div className="text-right pt-0.5">
+                                <span className="font-anton text-lg text-[#86603A]">
+                                  ${itemTotal.toFixed(2)}
                                 </span>
-                              ) : null}
-                              <span className="text-zinc-900 font-bold whitespace-nowrap">
-                                ${itemTotal.toFixed(2)}
-                              </span>
+                              </div>
                             </div>
                           </div>
                         );
