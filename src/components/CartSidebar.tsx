@@ -152,9 +152,8 @@ export default function CartSidebar() {
                                   <div className="flex flex-col items-end">
                                     <span className="text-xs text-zinc-400 mb-0.5 whitespace-nowrap">
                                       {item.addOns.length > 0 
-                                        ? `($${item.price.toFixed(2)} + $${item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0).toFixed(2)})` 
-                                        : `$${item.price.toFixed(2)}`} 
-                                      {item.quantity > 1 ? ` × ${item.quantity}` : ''} =
+                                        ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)} =` 
+                                        : `${item.quantity} × $${item.price.toFixed(2)} =`}
                                     </span>
                                     <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
                                   </div>
@@ -379,9 +378,9 @@ export default function CartSidebar() {
                             <div className="text-right flex flex-col items-end justify-start">
                               {item.quantity > 1 || item.addOns.length > 0 ? (
                                 <span className="text-[10px] text-zinc-400 font-normal mb-0.5 whitespace-nowrap">
-                                  {item.quantity} × {item.addOns.length > 0 
-                                    ? `($${item.price.toFixed(2)} + $${item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0).toFixed(2)})` 
-                                    : `$${item.price.toFixed(2)}`} =
+                                  {item.addOns.length > 0 
+                                    ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)} =` 
+                                    : `${item.quantity} × $${item.price.toFixed(2)} =`}
                                 </span>
                               ) : null}
                               <span className="text-zinc-900 font-bold whitespace-nowrap">
