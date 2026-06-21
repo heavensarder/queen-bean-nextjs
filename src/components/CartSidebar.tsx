@@ -359,6 +359,32 @@ export default function CartSidebar() {
                 </form>
 
                 <div className="p-6 bg-zinc-50 border-t border-zinc-200 mt-auto">
+                  {/* Order Summary in Checkout */}
+                  <div className="mb-4 pb-4 border-b border-zinc-200 border-dashed">
+                    <h4 className="font-brandon font-bold text-xs uppercase tracking-widest text-zinc-500 mb-3">Order Summary</h4>
+                    <div className="space-y-2.5">
+                      {cartItems.map((item) => {
+                        const itemTotal = (item.price + item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0)) * item.quantity;
+                        return (
+                          <div key={item.id} className="flex justify-between items-start text-sm font-brandon">
+                            <div className="flex-1 pr-4">
+                              <span className="font-bold text-zinc-900">{item.quantity}× {item.name}</span>
+                              {item.size && <span className="text-zinc-500"> ({item.size})</span>}
+                              {item.addOns.length > 0 && (
+                                <div className="text-xs text-zinc-500 mt-0.5">
+                                  + {item.addOns.map(a => a.name).join(', ')}
+                                </div>
+                              )}
+                            </div>
+                            <div className="text-zinc-900 font-bold whitespace-nowrap">
+                              ${itemTotal.toFixed(2)}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="space-y-2 mb-4 font-brandon text-sm text-zinc-600">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
