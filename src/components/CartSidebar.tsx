@@ -147,7 +147,21 @@ export default function CartSidebar() {
                               <h3 className="font-brandon font-bold text-zinc-900 leading-tight">
                                 {item.name} {item.size && <span className="text-zinc-500 font-normal">({item.size})</span>}
                               </h3>
-                              <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
+                              <div className="text-right">
+                                {item.quantity > 1 || item.addOns.length > 0 ? (
+                                  <div className="flex flex-col items-end">
+                                    <span className="text-xs text-zinc-400 mb-0.5 whitespace-nowrap">
+                                      {item.addOns.length > 0 
+                                        ? `($${item.price.toFixed(2)} + $${item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0).toFixed(2)})` 
+                                        : `$${item.price.toFixed(2)}`} 
+                                      {item.quantity > 1 ? ` × ${item.quantity}` : ''} =
+                                    </span>
+                                    <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
+                                  </div>
+                                ) : (
+                                  <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
+                                )}
+                              </div>
                             </div>
                             
                             {item.addOns.length > 0 && (
