@@ -16,6 +16,7 @@ export interface CartItem {
   addOns: CartAddOn[];
   specialInstructions: string;
   image: string;
+  size?: string;
 }
 
 interface CartContextType {

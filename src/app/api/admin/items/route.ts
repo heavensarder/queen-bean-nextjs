@@ -25,12 +25,12 @@ export async function GET(request: NextRequest) {
   let items;
   if (categoryId) {
     items = await query<any[]>(
-      'SELECT i.*, c.name as category_name FROM items i JOIN categories c ON i.category_id = c.id WHERE i.category_id = ? ORDER BY i.order_index ASC',
+      'SELECT i.*, c.name as category_name FROM items i JOIN categories c ON i.category_id = c.id WHERE i.category_id = ? ORDER BY i.order_index DESC',
       [categoryId]
     );
   } else {
     items = await query<any[]>(
-      'SELECT i.*, c.name as category_name FROM items i JOIN categories c ON i.category_id = c.id ORDER BY c.order_index ASC, i.order_index ASC'
+      'SELECT i.*, c.name as category_name FROM items i JOIN categories c ON i.category_id = c.id ORDER BY c.order_index ASC, i.order_index DESC'
     );
   }
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
-  const { category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients } = body;
+  const { category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, sizes } = body;
 
   if (!category_id || !name || !price || !image) {
     return NextResponse.json(
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
   const nextOrder = (maxResult[0]?.max_order ?? -1) + 1;
 
   await query(
-    'INSERT INTO items (id, category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, order_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    'INSERT INTO items (id, category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, sizes, order_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
       id,
       category_id,
@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
       tags && tags.length > 0 ? JSON.stringify(tags) : null,
       is_available !== undefined ? is_available : true,
       extra_ingredients && extra_ingredients.length > 0 ? JSON.stringify(extra_ingredients) : null,
+      sizes && sizes.length > 0 ? JSON.stringify(sizes) : null,
       nextOrder,
     ]
   );
@@ -93,7 +94,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
-  const { id, category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients } = body;
+  const { id, category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, sizes } = body;
 
   if (!id || !name || !price || !image) {
     return NextResponse.json(
@@ -103,7 +104,7 @@ export async function PUT(request: NextRequest) {
   }
 
   await query(
-    'UPDATE items SET category_id = ?, name = ?, description = ?, price = ?, calories = ?, sodium = ?, image = ?, tags = ?, is_available = ?, extra_ingredients = ? WHERE id = ?',
+    'UPDATE items SET category_id = ?, name = ?, description = ?, price = ?, calories = ?, sodium = ?, image = ?, tags = ?, is_available = ?, extra_ingredients = ?, sizes = ? WHERE id = ?',
     [
       category_id,
       name,
@@ -115,6 +116,7 @@ export async function PUT(request: NextRequest) {
       tags && tags.length > 0 ? JSON.stringify(tags) : null,
       is_available !== undefined ? is_available : true,
       extra_ingredients && extra_ingredients.length > 0 ? JSON.stringify(extra_ingredients) : null,
+      sizes && sizes.length > 0 ? JSON.stringify(sizes) : null,
       id,
     ]
   );

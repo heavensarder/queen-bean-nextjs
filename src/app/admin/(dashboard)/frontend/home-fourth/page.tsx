@@ -139,7 +139,7 @@ export default function HomeFourthEditPage() {
     setImage: (val: string) => void,
     mode: 'upload' | 'url',
     setMode: (val: 'upload' | 'url') => void,
-    fileRef: React.RefObject<HTMLInputElement>,
+    fileRef: React.RefObject<HTMLInputElement | null>,
     uploading: boolean,
     setUploading: (val: boolean) => void
   ) => (

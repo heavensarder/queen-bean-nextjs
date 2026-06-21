@@ -37,8 +37,39 @@ export default function CategoriesPage() {
     fetchCategories();
   }, [fetchCategories]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [showModal]);
+
+  // Save draft
+  useEffect(() => {
+    if (!editingCategory && showModal) {
+      const draft = { formName, formSubtitle, formNotes, formAddOns };
+      localStorage.setItem('queenbean_cat_draft', JSON.stringify(draft));
+    }
+  }, [formName, formSubtitle, formNotes, formAddOns, editingCategory, showModal]);
+
   const openCreateModal = () => {
     setEditingCategory(null);
+    const draftStr = localStorage.getItem('queenbean_cat_draft');
+    if (draftStr) {
+      try {
+        const draft = JSON.parse(draftStr);
+        setFormName(draft.formName || '');
+        setFormSubtitle(draft.formSubtitle || '');
+        setFormNotes(draft.formNotes || '');
+        setFormAddOns(draft.formAddOns || '');
+        setShowModal(true);
+        return;
+      } catch (e) {}
+    }
+
     setFormName('');
     setFormSubtitle('');
     setFormNotes('');
@@ -89,6 +120,10 @@ export default function CategoriesPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+
+    if (!editingCategory) {
+      localStorage.removeItem('queenbean_cat_draft');
+    }
 
     setSaving(false);
     setShowModal(false);
@@ -239,7 +274,7 @@ export default function CategoriesPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4"
-            onClick={() => setShowModal(false)}
+            // onClick={() => setShowModal(false)} // Removed to prevent accidental closing
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -247,11 +282,19 @@ export default function CategoriesPage() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
+              data-lenis-prevent="true"
             >
-              <div className="p-6 border-b border-zinc-200">
+              <div className="p-6 border-b border-zinc-200 flex justify-between items-center">
                 <h2 className="font-anton text-2xl uppercase tracking-wider text-zinc-900">
                   {editingCategory ? 'Edit Category' : 'New Category'}
                 </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Close"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
               </div>
 
               <div className="p-6 space-y-5">

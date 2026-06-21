@@ -12,6 +12,7 @@ export interface MenuItem {
   tags?: string[];
   isAvailable?: boolean;
   extraIngredients?: { name: string; price: string }[];
+  sizes?: { name: string; price: string }[];
 }
 
 export interface MenuCategory {

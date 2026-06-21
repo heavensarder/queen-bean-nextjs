@@ -12,6 +12,7 @@ interface OrderItem {
   price_at_time: string;
   add_ons: { name: string; price: string }[];
   special_instructions: string | null;
+  size: string | null;
 }
 
 interface Order {
@@ -22,6 +23,9 @@ interface Order {
   order_info: string | null;
   special_notes: string | null;
   total_amount: string;
+  subtotal: string;
+  tax_amount: string;
+  tip_amount: string;
   status: OrderStatus;
   created_at: string;
   items: OrderItem[];
@@ -381,22 +385,26 @@ export default function OrdersPage() {
                               {item.quantity}
                             </span>
                             <div>
-                              <p className="font-brandon font-bold text-zinc-900 leading-tight">
-                                {item.item_name}
+                              <p className="font-brandon font-bold text-zinc-900 leading-tight text-base">
+                                {item.item_name} {item.size && <span className="text-[#86603A] bg-[#86603A]/10 px-1.5 py-0.5 rounded font-bold ml-1 text-sm">{item.size}</span>}
                               </p>
                               {item.add_ons && item.add_ons.length > 0 && (
-                                <p className="text-xs font-brandon text-zinc-500 mt-0.5">
-                                  + {item.add_ons.map((a) => `${a.name} ($${a.price})`).join(', ')}
-                                </p>
+                                <div className="mt-1.5 flex flex-col gap-1 border-l-2 border-[#86603A]/20 pl-2.5">
+                                  {item.add_ons.map((a, i) => (
+                                    <span key={i} className="text-xs font-brandon font-semibold text-zinc-500 flex items-center gap-1">
+                                      <span className="text-zinc-400">•</span> {a.name} <span className="text-[#86603A] font-bold">(+${parseFloat(a.price.replace(/[^0-9.]/g, '') || '0').toFixed(2)})</span>
+                                    </span>
+                                  ))}
+                                </div>
                               )}
                             </div>
                           </div>
-                          <span className="font-brandon font-bold text-zinc-900">
-                            ${item.price_at_time}
+                          <span className="font-brandon font-bold text-zinc-900 text-base">
+                            ${parseFloat(item.price_at_time || '0').toFixed(2)}
                           </span>
                         </div>
                         {item.special_instructions && (
-                          <div className="ml-11 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5">
+                          <div className="ml-11 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 mt-2 shadow-sm">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="shrink-0 mt-0.5 text-amber-600">
                               <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                               <line x1="12" y1="9" x2="12" y2="13"></line>
@@ -415,8 +423,30 @@ export default function OrdersPage() {
                   </div>
                 </div>
 
+                {/* Financial Breakdown */}
+                <div className="bg-zinc-100 border-t border-zinc-200 p-6 font-brandon text-sm">
+                  <div className="space-y-3 mb-4 text-zinc-600 border-b border-zinc-300 border-dashed pb-4">
+                    <div className="flex justify-between font-bold">
+                      <span>Subtotal</span>
+                      <span>${parseFloat(order.subtotal || '0').toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between font-bold">
+                      <span>Tax</span>
+                      <span>${parseFloat(order.tax_amount || '0').toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between font-bold text-[#86603A]">
+                      <span>Tip</span>
+                      <span>${parseFloat(order.tip_amount || '0').toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between pt-2 text-xl font-bold text-zinc-900 font-anton tracking-wide">
+                    <span>Grand Total</span>
+                    <span>${parseFloat(order.total_amount || '0').toFixed(2)}</span>
+                  </div>
+                </div>
+
                 {/* Actions */}
-                <div className="p-6 border-t border-zinc-100 bg-zinc-50/50 flex gap-3 flex-wrap">
+                <div className="p-6 border-t border-zinc-200 bg-zinc-100/50 flex gap-3 flex-wrap">
                   {/* Status actions */}
                   {order.status === 'Pending' && (
                     <>

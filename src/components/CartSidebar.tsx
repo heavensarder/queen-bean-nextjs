@@ -10,15 +10,26 @@ export default function CartSidebar() {
   const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3>(1); // 1: Cart, 2: Checkout Details, 3: Success
 
   // Checkout form state
-  const [orderType, setOrderType] = useState<'Delivery' | 'Pickup' | 'In-Restaurant'>('Pickup');
+  const [orderType, setOrderType] = useState<'Delivery' | 'Pickup' | 'Dine-In'>('Pickup');
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [orderInfo, setOrderInfo] = useState(''); // Address, Time, or generic note
   const [specialNotes, setSpecialNotes] = useState('');
+  const [tipOption, setTipOption] = useState<'18' | '20' | '22' | 'Custom' | 'None'>('None');
+  const [customTipAmount, setCustomTipAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const grandTotal = cartTotal; // Tax not added yet
+  const subtotal = cartTotal;
+  const taxAmount = subtotal * 0.06;
+  
+  let tipAmount = 0;
+  if (tipOption === '18') tipAmount = subtotal * 0.18;
+  else if (tipOption === '20') tipAmount = subtotal * 0.20;
+  else if (tipOption === '22') tipAmount = subtotal * 0.22;
+  else if (tipOption === 'Custom') tipAmount = parseFloat(customTipAmount) || 0;
+
+  const grandTotal = subtotal + taxAmount + tipAmount;
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +56,9 @@ export default function CartSidebar() {
           orderInfo,
           specialNotes,
           totalAmount: grandTotal,
+          subtotal,
+          taxAmount,
+          tipAmount,
           items: cartItems,
         }),
       });
@@ -86,7 +100,7 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="relative w-full max-w-md h-full bg-white shadow-2xl flex flex-col"
+            className="relative w-full max-w-md h-[100dvh] bg-white shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-6 border-b border-zinc-200 flex justify-between items-center bg-[#F2EFEB]">
@@ -107,7 +121,7 @@ export default function CartSidebar() {
             {/* STEP 1: CART ITEMS */}
             {checkoutStep === 1 && (
               <>
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                <div className="flex-1 overflow-y-auto p-6 space-y-6" data-lenis-prevent="true">
                   {cartItems.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-zinc-500">
                       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mb-4 text-zinc-300">
@@ -130,13 +144,15 @@ export default function CartSidebar() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start gap-2">
-                              <h3 className="font-brandon font-bold text-zinc-900 leading-tight">{item.name}</h3>
+                              <h3 className="font-brandon font-bold text-zinc-900 leading-tight">
+                                {item.name} {item.size && <span className="text-zinc-500 font-normal">({item.size})</span>}
+                              </h3>
                               <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
                             </div>
                             
                             {item.addOns.length > 0 && (
                               <p className="text-xs font-brandon text-zinc-500 mt-1">
-                                {item.addOns.map(a => a.name).join(', ')}
+                                {item.addOns.map(a => `${a.name} (+$${parseFloat(a.price.replace(/[^0-9.]/g, '') || '0').toFixed(2)})`).join(', ')}
                               </p>
                             )}
                             
@@ -165,8 +181,8 @@ export default function CartSidebar() {
                   <div className="p-6 bg-zinc-50 border-t border-zinc-200">
                     <div className="space-y-2 mb-6 font-brandon text-sm">
                       <div className="flex justify-between text-zinc-900 font-bold text-lg pt-2">
-                        <span>Total</span>
-                        <span>${grandTotal.toFixed(2)}</span>
+                        <span>Subtotal</span>
+                        <span>${subtotal.toFixed(2)}</span>
                       </div>
                     </div>
                     <button
@@ -182,7 +198,7 @@ export default function CartSidebar() {
 
             {/* STEP 2: CHECKOUT FORM */}
             {checkoutStep === 2 && (
-              <div className="flex-1 overflow-y-auto flex flex-col">
+              <div className="flex-1 overflow-y-auto flex flex-col min-h-0 overscroll-contain" data-lenis-prevent="true">
                 <form onSubmit={handleSubmitOrder} className="p-6 space-y-6 flex-1">
                   {error && (
                     <div className="p-4 bg-red-50 text-red-600 rounded-xl font-brandon text-sm">
@@ -193,7 +209,7 @@ export default function CartSidebar() {
                   <div>
                     <label className="block text-xs tracking-widest uppercase font-brandon font-bold text-zinc-500 mb-2">Order Type</label>
                     <div className="grid grid-cols-3 gap-2">
-                      {['Pickup', 'Delivery', 'In-Restaurant'].map((type) => (
+                      {['Pickup', 'Delivery', 'Dine-In'].map((type) => (
                         <button
                           key={type}
                           type="button"
@@ -285,26 +301,80 @@ export default function CartSidebar() {
                         className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 resize-none h-20"
                       />
                     </div>
+
+                    {/* Tip Section */}
+                    <div>
+                      <label className="block text-xs tracking-widest uppercase font-brandon font-bold text-zinc-500 mb-2">Tip</label>
+                      <div className="grid grid-cols-5 gap-2">
+                        {[
+                          { label: '18%', value: '18' },
+                          { label: '20%', value: '20' },
+                          { label: '22%', value: '22' },
+                          { label: 'Custom', value: 'Custom' },
+                          { label: 'None', value: 'None' },
+                        ].map((tip) => (
+                          <button
+                            key={tip.value}
+                            type="button"
+                            onClick={() => setTipOption(tip.value as any)}
+                            className={`py-3 px-1 text-center rounded-xl font-brandon text-xs font-bold transition-colors ${
+                              tipOption === tip.value 
+                                ? 'bg-[#86603A] text-white' 
+                                : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200'
+                            }`}
+                          >
+                            {tip.label}
+                          </button>
+                        ))}
+                      </div>
+                      {tipOption === 'Custom' && (
+                        <div className="mt-3">
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={customTipAmount}
+                            onChange={(e) => setCustomTipAmount(e.target.value)}
+                            className="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-3.5 font-brandon text-sm focus:outline-none focus:ring-2 focus:ring-[#86603A]/50"
+                            placeholder="Enter custom tip amount ($)"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </form>
 
                 <div className="p-6 bg-zinc-50 border-t border-zinc-200 mt-auto">
-                  <div className="flex justify-between text-zinc-900 font-bold text-xl mb-6">
+                  <div className="space-y-2 mb-4 font-brandon text-sm text-zinc-600">
+                    <div className="flex justify-between">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tax (6%)</span>
+                      <span>${taxAmount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Tip</span>
+                      <span>${tipAmount.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between text-zinc-900 font-bold text-xl mb-6 pt-4 border-t border-zinc-200">
                     <span>Total</span>
                     <span>${grandTotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex flex-col-reverse md:flex-row gap-3">
                     <button
                       type="button"
                       onClick={() => setCheckoutStep(1)}
-                      className="px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold bg-zinc-200 text-zinc-600 hover:bg-zinc-300 transition-colors"
+                      className="w-full md:w-auto px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold bg-zinc-200 text-zinc-600 hover:bg-zinc-300 transition-colors"
                     >
                       Back
                     </button>
                     <button
                       onClick={handleSubmitOrder}
                       disabled={isSubmitting}
-                      className="flex-1 bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg disabled:opacity-50 flex justify-center items-center gap-2"
+                      className="flex-1 w-full bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg disabled:opacity-50 flex justify-center items-center gap-2"
                     >
                       {isSubmitting ? (
                         <>

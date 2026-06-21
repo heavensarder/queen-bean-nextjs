@@ -354,7 +354,7 @@ function ItemCard({
   onInfoClick: () => void;
 }) {
   return (
-    <div className="w-full h-full" onClick={onInfoClick}>
+    <div className={`w-full h-full cursor-pointer group ${!item.isAvailable ? 'opacity-75 grayscale-[30%]' : ''}`} onClick={onInfoClick}>
       {/* Image */}
       <div className="relative aspect-[4/3] lg:aspect-[4/3] overflow-hidden">
         <Image
@@ -366,6 +366,15 @@ function ItemCard({
         />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+
+        {/* Unavailable Fade Overlay */}
+        {!item.isAvailable && (
+          <div className="absolute inset-0 bg-black/10 z-10 flex items-center justify-center pointer-events-none">
+            <span className="bg-red-600/90 text-white px-4 py-2 rounded-lg font-brandon font-bold tracking-widest uppercase text-xs shadow-lg">
+              Not Available Right Now
+            </span>
+          </div>
+        )}
 
         {/* Category Label */}
         <span className="absolute top-4 left-4 text-[10px] lg:text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-white/70">
@@ -392,7 +401,7 @@ function ItemCard({
             e.stopPropagation();
             onInfoClick();
           }}
-          className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white text-zinc-900 flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:bg-[#86603A] hover:text-white"
+          className="absolute bottom-4 right-4 z-20 w-10 h-10 rounded-full bg-white text-zinc-900 flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:bg-[#86603A] hover:text-white"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
@@ -407,8 +416,17 @@ function ItemCard({
             {item.name}
           </h3>
           <div className="flex items-center gap-3 mt-1.5">
-            <span className="font-brandon font-bold text-base lg:text-lg text-white">
-              ${item.price}
+            <span className="font-brandon font-bold text-sm lg:text-base text-white">
+              {item.sizes && item.sizes.length > 0 
+                ? item.sizes.map(s => {
+                    const priceNum = parseFloat(s.price.replace(/[^0-9.]/g, ''));
+                    return `$${isNaN(priceNum) ? s.price : priceNum.toFixed(2)}`;
+                  }).join(' / ')
+                : (() => {
+                    const priceNum = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+                    return isNaN(priceNum) ? `$${item.price}` : `$${priceNum.toFixed(2)}`;
+                  })()
+              }
             </span>
             {item.calories && (
               <span className="text-[11px] font-brandon text-white/60">
@@ -436,10 +454,14 @@ function DetailModal({
   const [quantity, setQuantity] = useState(1);
   const [selectedAddOns, setSelectedAddOns] = useState<CartAddOn[]>([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [selectedSize, setSelectedSize] = useState<{name: string, price: string} | null>(
+    item.sizes && item.sizes.length > 0 ? item.sizes[0] : null
+  );
 
-  // Extract a base price number from a string like "5.25 / 6.25"
+  // Extract a base price number from a string like "5.25 / 6.25" only if sizes aren't present
   const basePriceStr = item.price.split('/')[0].replace(/[^0-9.]/g, '');
-  const basePrice = parseFloat(basePriceStr) || 0;
+  const parsedBasePrice = parseFloat(basePriceStr) || 0;
+  const basePrice = selectedSize ? parseFloat(selectedSize.price) : parsedBasePrice;
 
   const handleAddOnToggle = (addon: { name: string; price: string }) => {
     setSelectedAddOns((prev) => {
@@ -460,6 +482,7 @@ function DetailModal({
       addOns: selectedAddOns,
       specialInstructions,
       image: item.image,
+      size: selectedSize?.name,
     });
     onClose();
   };
@@ -577,9 +600,47 @@ function DetailModal({
             className="mt-6 flex items-baseline gap-3"
           >
             <span className="font-anton text-3xl lg:text-4xl text-zinc-900">
-              ${item.price}
+              ${basePrice.toFixed(2)}
             </span>
           </motion.div>
+
+          {/* Sizes */}
+          {item.sizes && item.sizes.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.52 }}
+              className="mt-6 border-t border-zinc-200 pt-6"
+            >
+              <p className="text-xs tracking-[0.2em] uppercase font-brandon font-semibold text-zinc-400 mb-3">
+                Size Options
+              </p>
+              <div className="flex flex-col gap-3">
+                {item.sizes.map((sizeOption, idx) => (
+                  <label
+                    key={idx}
+                    className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
+                      selectedSize?.name === sizeOption.name
+                        ? 'border-[#86603A] bg-[#86603A]/5 ring-1 ring-[#86603A]'
+                        : 'border-zinc-200 bg-zinc-50 hover:border-[#86603A]/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="item-size"
+                        checked={selectedSize?.name === sizeOption.name}
+                        onChange={() => setSelectedSize(sizeOption)}
+                        className="w-5 h-5 border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                      />
+                      <span className="font-brandon font-semibold text-zinc-900">{sizeOption.name}</span>
+                    </div>
+                    <span className="font-brandon font-bold text-[#86603A]">${parseFloat(sizeOption.price).toFixed(2)}</span>
+                  </label>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           {/* Nutrition Info */}
           {(item.calories || item.sodium) && (
@@ -712,15 +773,24 @@ function DetailModal({
               </div>
 
               {/* Add to Cart Button */}
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 bg-black text-white px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors shadow-xl flex items-center justify-between group"
-              >
-                <span>Add to Cart</span>
-                <span className="text-[#86603A] group-hover:text-white transition-colors">
-                  ${totalItemPrice.toFixed(2)}
-                </span>
-              </button>
+              {item.isAvailable ? (
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 bg-black text-white px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors shadow-xl flex items-center justify-between group"
+                >
+                  <span>Add to Cart</span>
+                  <span className="text-[#86603A] group-hover:text-white transition-colors">
+                    ${totalItemPrice.toFixed(2)}
+                  </span>
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="flex-1 bg-zinc-200 text-zinc-500 px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold flex items-center justify-center cursor-not-allowed"
+                >
+                  Item Currently Unavailable
+                </button>
+              )}
             </div>
           </motion.div>
         </div>

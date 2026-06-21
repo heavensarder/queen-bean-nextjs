@@ -17,6 +17,7 @@ interface Item {
   tags: string[] | null;
   is_available: boolean;
   extra_ingredients: { name: string; price: string }[] | null;
+  sizes: { name: string; price: string }[] | null;
   order_index: number;
 }
 
@@ -47,6 +48,8 @@ export default function ItemsPage() {
   const [formTags, setFormTags] = useState('');
   const [formIsAvailable, setFormIsAvailable] = useState(true);
   const [formExtraIngredients, setFormExtraIngredients] = useState<{name: string, price: string}[]>([]);
+  const [hasSizes, setHasSizes] = useState(false);
+  const [formSizes, setFormSizes] = useState<{name: string, price: string}[]>([]);
   const [imageMode, setImageMode] = useState<'upload' | 'url'>('url');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -75,8 +78,52 @@ export default function ItemsPage() {
     fetchItems();
   }, [fetchItems]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [showModal]);
+
+  // Save draft
+  useEffect(() => {
+    if (!editingItem && showModal) {
+      const draft = {
+        formCategoryId, formName, formDescription, formPrice,
+        formCalories, formSodium, formImage, formTags,
+        formIsAvailable, formExtraIngredients, hasSizes, formSizes, imageMode
+      };
+      localStorage.setItem('queenbean_item_draft', JSON.stringify(draft));
+    }
+  }, [formCategoryId, formName, formDescription, formPrice, formCalories, formSodium, formImage, formTags, formIsAvailable, formExtraIngredients, hasSizes, formSizes, imageMode, editingItem, showModal]);
+
   const openCreateModal = () => {
     setEditingItem(null);
+    const draftStr = localStorage.getItem('queenbean_item_draft');
+    if (draftStr) {
+      try {
+        const draft = JSON.parse(draftStr);
+        setFormCategoryId(draft.formCategoryId || categories[0]?.id || '');
+        setFormName(draft.formName || '');
+        setFormDescription(draft.formDescription || '');
+        setFormPrice(draft.formPrice || '');
+        setFormCalories(draft.formCalories || '');
+        setFormSodium(draft.formSodium || '');
+        setFormImage(draft.formImage || '');
+        setFormTags(draft.formTags || '');
+        setFormIsAvailable(draft.formIsAvailable ?? true);
+        setFormExtraIngredients(draft.formExtraIngredients || []);
+        setHasSizes(draft.hasSizes || false);
+        setFormSizes(draft.formSizes || []);
+        setImageMode(draft.imageMode || 'url');
+        setShowModal(true);
+        return;
+      } catch (e) {}
+    }
+
     setFormCategoryId(categories[0]?.id || '');
     setFormName('');
     setFormDescription('');
@@ -87,6 +134,8 @@ export default function ItemsPage() {
     setFormTags('');
     setFormIsAvailable(true);
     setFormExtraIngredients([]);
+    setHasSizes(false);
+    setFormSizes([]);
     setImageMode('url');
     setShowModal(true);
   };
@@ -103,6 +152,8 @@ export default function ItemsPage() {
     setFormTags(item.tags ? item.tags.join(', ') : '');
     setFormIsAvailable(item.is_available ?? true);
     setFormExtraIngredients(item.extra_ingredients || []);
+    setHasSizes(item.sizes && item.sizes.length > 0 ? true : false);
+    setFormSizes(item.sizes || []);
     setImageMode('url');
     setShowModal(true);
   };
@@ -152,7 +203,13 @@ export default function ItemsPage() {
       tags: tags.length > 0 ? tags : null,
       is_available: formIsAvailable,
       extra_ingredients: formExtraIngredients.length > 0 ? formExtraIngredients : null,
+      sizes: hasSizes && formSizes.length > 0 ? formSizes : null,
     };
+    
+    // Auto-compute base price if sizes are enabled
+    if (hasSizes && formSizes.length > 0) {
+      payload.price = formSizes[0].price;
+    }
 
     const method = editingItem ? 'PUT' : 'POST';
     await fetch('/api/admin/items', {
@@ -160,6 +217,10 @@ export default function ItemsPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+
+    if (!editingItem) {
+      localStorage.removeItem('queenbean_item_draft');
+    }
 
     setSaving(false);
     setShowModal(false);
@@ -280,8 +341,18 @@ export default function ItemsPage() {
                 </p>
               )}
               <div className="flex items-center justify-between mt-3">
-                <span className="font-brandon font-bold text-zinc-900">
-                  ${item.price}
+                <span className="font-brandon font-bold text-zinc-900 text-sm">
+                  {item.sizes && item.sizes.length > 0 
+                    ? item.sizes.map(s => {
+                        const priceNum = parseFloat(s.price.replace(/[^0-9.]/g, ''));
+                        const displaySizeName = s.name.toLowerCase() === 'small' ? 'S' : s.name.toLowerCase() === 'large' ? 'Large' : s.name;
+                        return `$${isNaN(priceNum) ? s.price : priceNum.toFixed(2)} (${displaySizeName})`;
+                      }).join(' / ')
+                    : (() => {
+                        const priceNum = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+                        return isNaN(priceNum) ? `$${item.price}` : `$${priceNum.toFixed(2)}`;
+                      })()
+                  }
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
@@ -321,7 +392,7 @@ export default function ItemsPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[200] bg-black/50 flex items-center justify-center p-4"
-            onClick={() => setShowModal(false)}
+            // onClick={() => setShowModal(false)} // Removed to prevent accidental closing
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -329,11 +400,19 @@ export default function ItemsPage() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
+              data-lenis-prevent="true"
             >
-              <div className="p-6 border-b border-zinc-200">
+              <div className="p-6 border-b border-zinc-200 flex justify-between items-center">
                 <h2 className="font-anton text-2xl uppercase tracking-wider text-zinc-900">
                   {editingItem ? 'Edit Item' : 'New Item'}
                 </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  aria-label="Close"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
               </div>
 
               <div className="p-6 space-y-5">
@@ -341,13 +420,13 @@ export default function ItemsPage() {
                 <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-200 rounded-xl p-4">
                   <input
                     type="checkbox"
-                    id="is-available"
-                    checked={formIsAvailable}
-                    onChange={(e) => setFormIsAvailable(e.target.checked)}
-                    className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                    id="is-unavailable"
+                    checked={!formIsAvailable}
+                    onChange={(e) => setFormIsAvailable(!e.target.checked)}
+                    className="w-5 h-5 rounded border-zinc-300 text-red-600 focus:ring-red-600"
                   />
-                  <label htmlFor="is-available" className="font-brandon text-sm uppercase tracking-widest text-zinc-900 font-bold select-none cursor-pointer">
-                    Item is Available
+                  <label htmlFor="is-unavailable" className="font-brandon text-sm uppercase tracking-widest text-zinc-900 font-bold select-none cursor-pointer">
+                    Item is Unavailable
                   </label>
                 </div>
 
@@ -397,21 +476,97 @@ export default function ItemsPage() {
                   />
                 </div>
 
+                {/* Sizes */}
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <input
+                      type="checkbox"
+                      id="has-sizes"
+                      checked={hasSizes}
+                      onChange={(e) => setHasSizes(e.target.checked)}
+                      className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                    />
+                    <label htmlFor="has-sizes" className="font-brandon text-sm uppercase tracking-widest text-zinc-900 font-bold select-none cursor-pointer">
+                      Item has multiple sizes?
+                    </label>
+                  </div>
+                  
+                  {hasSizes && (
+                    <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="font-brandon text-xs uppercase tracking-widest text-zinc-500 font-bold">
+                          Size Options <span className="text-zinc-400 normal-case tracking-normal">(Base price is derived from the first size)</span>
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => setFormSizes([...formSizes, { name: '', price: '' }])}
+                          className="text-xs font-brandon font-bold text-[#86603A] hover:underline"
+                        >
+                          + Add Size
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {formSizes.map((size, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <input
+                          type="text"
+                          value={size.name}
+                          onChange={(e) => {
+                            const newSizes = [...formSizes];
+                            newSizes[idx].name = e.target.value;
+                            setFormSizes(newSizes);
+                          }}
+                          className="flex-1 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
+                          placeholder="Name (e.g. Small, Large)"
+                        />
+                        <input
+                          type="text"
+                          value={size.price}
+                          onChange={(e) => {
+                            const newSizes = [...formSizes];
+                            newSizes[idx].price = e.target.value;
+                            setFormSizes(newSizes);
+                          }}
+                          className="w-24 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
+                          placeholder="Price ($)"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newSizes = formSizes.filter((_, i) => i !== idx);
+                            setFormSizes(newSizes);
+                          }}
+                          className="p-2 text-zinc-400 hover:text-red-600 transition-colors"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+                        </button>
+                      </div>
+                    ))}
+                    {formSizes.length === 0 && (
+                      <p className="text-sm font-brandon text-zinc-500 italic">No sizes added yet. Click "+ Add Size" to begin.</p>
+                    )}
+                  </div>
+                    </div>
+                  )}
+                </div>
+
                 {/* Price, Calories, Sodium row */}
                 <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
-                      Price ($) *
-                    </label>
-                    <input
-                      type="text"
-                      value={formPrice}
-                      onChange={(e) => setFormPrice(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
-                      placeholder="$5.25"
-                    />
-                  </div>
-                  <div>
+                  {!hasSizes && (
+                    <div>
+                      <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                        Price ($) *
+                      </label>
+                      <input
+                        type="text"
+                        value={formPrice}
+                        onChange={(e) => setFormPrice(e.target.value)}
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
+                        placeholder="$5.25"
+                      />
+                    </div>
+                  )}
+                  <div className={hasSizes ? "col-span-1" : ""}>
                     <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
                       Calories
                     </label>
@@ -504,6 +659,8 @@ export default function ItemsPage() {
                     ))}
                   </div>
                 </div>
+
+
 
                 {/* Image */}
                 <div>
@@ -605,7 +762,7 @@ export default function ItemsPage() {
                 </button>
                 <button
                   onClick={handleSave}
-                  disabled={!formName.trim() || !formPrice.trim() || !formImage.trim() || saving}
+                  disabled={!formName.trim() || (!hasSizes && !formPrice.trim()) || (hasSizes && formSizes.length === 0) || !formImage.trim() || saving}
                   className="px-6 py-3 bg-black text-white rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : editingItem ? 'Update' : 'Create'}

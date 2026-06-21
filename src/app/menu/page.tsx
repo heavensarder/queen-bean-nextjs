@@ -23,6 +23,7 @@ interface DBItem {
   tags: string | null;
   is_available: number | null;
   extra_ingredients: string | null;
+  sizes: string | null;
   order_index: number;
 }
 
@@ -31,7 +32,7 @@ async function getMenuData(): Promise<MenuCategory[]> {
     'SELECT * FROM categories ORDER BY order_index ASC'
   );
   const items = await query<DBItem[]>(
-    'SELECT * FROM items ORDER BY order_index ASC'
+    'SELECT * FROM items ORDER BY order_index DESC'
   );
 
   return categories.map((cat) => ({
@@ -41,7 +42,7 @@ async function getMenuData(): Promise<MenuCategory[]> {
     notes: cat.notes ? (cat.notes as any) : undefined,
     addOns: cat.add_ons ? (cat.add_ons as any) : undefined,
     items: items
-      .filter((item) => item.category_id === cat.id && (item.is_available === 1 || item.is_available === null))
+      .filter((item) => item.category_id === cat.id)
       .map((item) => ({
         id: item.id,
         name: item.name,
@@ -53,6 +54,7 @@ async function getMenuData(): Promise<MenuCategory[]> {
         tags: item.tags ? (item.tags as any) : undefined,
         isAvailable: item.is_available === 1 || item.is_available === null,
         extraIngredients: item.extra_ingredients ? (item.extra_ingredients as any) : undefined,
+        sizes: item.sizes ? (item.sizes as any) : undefined,
       })),
   }));
 }

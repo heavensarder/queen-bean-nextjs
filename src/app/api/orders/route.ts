@@ -4,7 +4,7 @@ import { query } from '@/lib/db';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { customerName, customerPhone, orderType, orderInfo, specialNotes, totalAmount, items } = body;
+    const { customerName, customerPhone, orderType, orderInfo, specialNotes, totalAmount, subtotal, taxAmount, tipAmount, items } = body;
 
     if (!customerName || !customerPhone || !orderType || !items || items.length === 0) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -15,16 +15,16 @@ export async function POST(request: NextRequest) {
 
     // Insert order into database
     await query(
-      `INSERT INTO orders (id, customer_name, customer_phone, order_type, order_info, special_notes, total_amount, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')`,
-      [orderId, customerName, customerPhone, orderType, orderInfo || null, specialNotes || null, totalAmount]
+      `INSERT INTO orders (id, customer_name, customer_phone, order_type, order_info, special_notes, total_amount, subtotal, tax_amount, tip_amount, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`,
+      [orderId, customerName, customerPhone, orderType, orderInfo || null, specialNotes || null, totalAmount, subtotal || 0, taxAmount || 0, tipAmount || 0]
     );
 
     // Insert order items
     for (const item of items) {
       await query(
-        `INSERT INTO order_items (order_id, item_id, item_name, quantity, price_at_time, add_ons, special_instructions)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO order_items (order_id, item_id, item_name, quantity, price_at_time, add_ons, special_instructions, size)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           orderId,
           item.menuItemId,
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
           item.price,
           JSON.stringify(item.addOns),
           item.specialInstructions || null,
+          item.size || null,
         ]
       );
     }
