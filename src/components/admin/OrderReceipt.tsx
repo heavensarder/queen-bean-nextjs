@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 export interface OrderReceiptItem {
-  id: number;
+  id: number | string;
   item_name: string;
   quantity: number;
   price_at_time: string;
