@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from './CartContext';
 import Image from 'next/image';
+import html2canvas from 'html2canvas';
+import OrderReceipt, { OrderReceiptData } from './admin/OrderReceipt';
 
 export default function CartSidebar() {
   const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart();
@@ -19,6 +21,10 @@ export default function CartSidebar() {
   const [customTipAmount, setCustomTipAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  const [completedOrderData, setCompletedOrderData] = useState<OrderReceiptData | null>(null);
+  const receiptRef = useRef<HTMLDivElement>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const subtotal = cartTotal;
   const taxAmount = subtotal * 0.06;
@@ -64,13 +70,63 @@ export default function CartSidebar() {
       });
 
       if (!res.ok) throw new Error('Failed to place order');
+      const data = await res.json();
 
+      // Build data for the receipt component
+      const receiptData: OrderReceiptData = {
+        id: data.orderId || 'PENDING',
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        order_type: orderType,
+        order_info: orderInfo || null,
+        special_notes: specialNotes || null,
+        total_amount: grandTotal.toFixed(2),
+        subtotal: subtotal.toFixed(2),
+        tax_amount: taxAmount.toFixed(2),
+        tip_amount: tipAmount.toFixed(2),
+        status: 'Pending',
+        created_at: new Date().toISOString(),
+        items: cartItems.map((item, idx) => ({
+          id: item.id || idx,
+          item_name: item.name,
+          quantity: item.quantity,
+          price_at_time: item.price.toString(),
+          add_ons: item.addOns,
+          special_instructions: item.specialInstructions || null,
+          size: item.size || null,
+        })),
+      };
+
+      setCompletedOrderData(receiptData);
       setCheckoutStep(3); // Success page
       clearCart();
     } catch (err) {
       setError('An error occurred while placing your order. Please try again.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDownloadReceipt = async () => {
+    if (!receiptRef.current || !completedOrderData) return;
+    try {
+      setIsDownloading(true);
+      const canvas = await html2canvas(receiptRef.current, {
+        scale: 2, // Higher resolution
+        useCORS: true,
+        backgroundColor: '#ffffff',
+      });
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `QueenBean-Receipt-${completedOrderData.id}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Failed to generate receipt image', err);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -449,19 +505,48 @@ export default function CartSidebar() {
 
             {/* STEP 3: SUCCESS */}
             {checkoutStep === 3 && (
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#F2EFEB]">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center text-white mb-6 shadow-xl shadow-green-500/20">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex-1 flex flex-col items-center justify-start p-6 text-center bg-[#F2EFEB] overflow-y-auto" data-lenis-prevent="true">
+                <div className="w-16 h-16 shrink-0 bg-green-500 rounded-full flex items-center justify-center text-white mb-4 shadow-xl shadow-green-500/20">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                 </div>
-                <h3 className="font-anton text-4xl uppercase tracking-widest text-zinc-900 mb-2">Order Received!</h3>
-                <p className="font-brandon text-lg text-zinc-600 mb-8">
+                <h3 className="font-anton text-3xl uppercase tracking-widest text-zinc-900 mb-2">Order Received!</h3>
+                <p className="font-brandon text-base text-zinc-600 mb-6">
                   Thank you for your order. We are preparing it right now!
                 </p>
+
+                {completedOrderData && (
+                  <div className="w-full mb-6 text-left">
+                    <div className="bg-white p-2 rounded-xl shadow-sm mb-4 max-w-[400px] mx-auto overflow-hidden border border-zinc-200">
+                      <div ref={receiptRef}>
+                        <OrderReceipt order={completedOrderData} />
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={handleDownloadReceipt}
+                      disabled={isDownloading}
+                      className="w-full max-w-[400px] mx-auto flex items-center justify-center gap-2 bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg disabled:opacity-50"
+                    >
+                      {isDownloading ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                          Save Receipt as Image
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+
                 <button
                   onClick={handleClose}
-                  className="w-full bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg"
+                  className="w-full max-w-[400px] mx-auto bg-transparent border-2 border-zinc-300 text-zinc-500 py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-zinc-200 hover:text-zinc-900 transition-colors"
                 >
                   Close & Return
                 </button>
