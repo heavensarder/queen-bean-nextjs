@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import OrderReceipt from '@/components/admin/OrderReceipt';
 
 type OrderStatus = 'Pending' | 'Preparing' | 'Ready' | 'Completed' | 'Cancelled';
 
@@ -42,6 +43,21 @@ export default function OrdersPage() {
   const [dateTo, setDateTo] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [printingOrder, setPrintingOrder] = useState<Order | null>(null);
+
+  // Print handler
+  const handlePrint = (order: Order) => {
+    setPrintingOrder(order);
+    setTimeout(() => {
+      window.print();
+    }, 200); // give react time to render
+  };
+
+  useEffect(() => {
+    const afterPrint = () => setPrintingOrder(null);
+    window.addEventListener('afterprint', afterPrint);
+    return () => window.removeEventListener('afterprint', afterPrint);
+  }, []);
 
   // Today's date string for highlight comparison
   const todayStr = new Date().toISOString().split('T')[0];
@@ -480,6 +496,14 @@ export default function OrdersPage() {
                     </button>
                   )}
 
+                  <button
+                    onClick={() => handlePrint(order)}
+                    className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors flex items-center justify-center gap-2"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                    Print
+                  </button>
+
                   {/* Delete button (always visible) */}
                   {deleteConfirm === order.id ? (
                     <div className="flex items-center gap-2 ml-auto">
@@ -593,6 +617,11 @@ export default function OrdersPage() {
           </button>
         </div>
       )}
+
+      {/* ── HIDDEN PRINT CONTAINER ── */}
+      <div id="printable-receipt-container" className={printingOrder ? 'block' : 'hidden'}>
+        {printingOrder && <OrderReceipt order={printingOrder} />}
+      </div>
     </div>
   );
 }

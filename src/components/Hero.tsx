@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function ScrollText({ children }: { children: React.ReactNode }) {
@@ -47,22 +48,34 @@ export default function Hero({ content }: { content?: any }) {
     <div ref={containerRef} className="relative w-full bg-white">
       {/* Layer 1: Background (Sticky, Bottom Layer) */}
       <div className="sticky top-0 h-screen w-full overflow-hidden z-0">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url("${content?.backgroundImage}")` }}
-        />
+        {content?.backgroundImage && (
+          <Image
+            src={content.backgroundImage}
+            alt="Hero Background"
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        )}
       </div>
 
       {/* Layer 2: Food Image (Sticky, Top Layer) */}
       {/* Reduced max-w to make it smaller and leave more space above it */}
       <div className="sticky top-0 h-screen w-full z-20 pointer-events-none -mt-[100vh]">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[85%] max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl flex flex-col items-center justify-end pb-4 lg:pb-0 translate-y-[2%]">
-          <motion.img 
-            style={{ scale }}
-            src={content?.foodImage} 
-            alt="Queen Bean Omelete"
-            className="w-full h-auto object-contain drop-shadow-2xl origin-bottom mb-2 lg:mb-0"
-          />
+          <motion.div style={{ scale }} className="w-full origin-bottom mb-2 lg:mb-0">
+            {content?.foodImage && (
+              <Image 
+                src={content.foodImage} 
+                alt="Queen Bean Omelete"
+                width={1000}
+                height={1000}
+                priority
+                className="w-full h-auto object-contain drop-shadow-2xl"
+              />
+            )}
+          </motion.div>
           {/* Scroll down indicator for mobile */}
           <div className="flex lg:hidden flex-col items-center gap-1 pointer-events-auto animate-bounce">
              <div className="w-8 h-8 rounded-full border border-black flex items-center justify-center bg-white/80 shadow-sm backdrop-blur-sm">

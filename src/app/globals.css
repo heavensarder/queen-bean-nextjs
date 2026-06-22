@@ -46,3 +46,23 @@ button {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt-container, #printable-receipt-container * {
+    visibility: visible;
+  }
+  #printable-receipt-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  @page {
+    margin: 0;
+  }
+}
