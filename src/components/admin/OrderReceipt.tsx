@@ -36,12 +36,11 @@ export default function OrderReceipt({ order }: OrderReceiptProps) {
     <div className="w-full max-w-[400px] mx-auto bg-white p-6 font-brandon text-zinc-900 border border-zinc-200">
       {/* Logo & Header */}
       <div className="flex flex-col items-center justify-center text-center pb-6 border-b-2 border-dashed border-zinc-300">
-        <div className="relative w-24 h-24 mb-4">
-          <Image 
+        <div className="w-24 h-24 mb-4">
+          <img 
             src="https://i.postimg.cc/yYLDhDS6/queen-been-logo.png" 
             alt="Queen Bean Logo" 
-            fill
-            className="object-contain"
+            className="w-full h-full object-contain"
           />
         </div>
         <h1 className="font-anton text-2xl uppercase tracking-widest text-[#86603A] print:text-black">Queen Bean</h1>
