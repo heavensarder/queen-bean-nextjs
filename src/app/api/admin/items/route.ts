@@ -137,7 +137,30 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
 
-  await query('DELETE FROM items WHERE id = ?', [id]);
-  revalidatePath('/menu');
-  return NextResponse.json({ success: true });
+  try {
+    // Fetch the item first to get its image path
+    const items = await query<any[]>('SELECT image FROM items WHERE id = ?', [id]);
+    const item = items[0];
+
+    if (item && item.image && item.image.startsWith('/uploads/')) {
+      const fs = await import('fs/promises');
+      const path = await import('path');
+      const filepath = path.join(process.cwd(), 'public', item.image);
+      
+      try {
+        await fs.unlink(filepath);
+        console.log(`Successfully deleted image: ${filepath}`);
+      } catch (err: any) {
+        // If file doesn't exist or another error occurs, log it but don't fail the item deletion
+        console.warn(`Could not delete image file ${filepath}:`, err.message);
+      }
+    }
+
+    await query('DELETE FROM items WHERE id = ?', [id]);
+    revalidatePath('/menu');
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Failed to delete item:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
