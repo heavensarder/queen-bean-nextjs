@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrderReceipt from '@/components/admin/OrderReceipt';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 
 type OrderStatus = 'Pending' | 'Preparing' | 'Ready' | 'Completed' | 'Cancelled';
 
@@ -66,12 +66,10 @@ export default function OrdersPage() {
       const container = document.getElementById('printable-receipt-container');
       if (container) {
         try {
-          const canvas = await html2canvas(container, {
-            scale: 2,
-            useCORS: true,
+          const dataUrl = await htmlToImage.toPng(container, {
+            pixelRatio: 2,
             backgroundColor: '#ffffff',
           });
-          const dataUrl = canvas.toDataURL('image/png');
           const link = document.createElement('a');
           link.href = dataUrl;
           link.download = `QueenBean-Receipt-${order.id}.png`;

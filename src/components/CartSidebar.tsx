@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from './CartContext';
 import Image from 'next/image';
-import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
 import OrderReceipt, { OrderReceiptData } from './admin/OrderReceipt';
 
 export default function CartSidebar() {
@@ -111,12 +111,10 @@ export default function CartSidebar() {
     if (!receiptRef.current || !completedOrderData) return;
     try {
       setIsDownloading(true);
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 2, // Higher resolution
-        useCORS: true,
+      const dataUrl = await htmlToImage.toPng(receiptRef.current, {
+        pixelRatio: 2, // Higher resolution
         backgroundColor: '#ffffff',
       });
-      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = dataUrl;
       link.download = `QueenBean-Receipt-${completedOrderData.id}.png`;
