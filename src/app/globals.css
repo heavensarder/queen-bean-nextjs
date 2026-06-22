@@ -61,8 +61,11 @@ button {
     width: 100%;
     margin: 0;
     padding: 0;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   @page {
     margin: 0;
+    size: auto;
   }
 }

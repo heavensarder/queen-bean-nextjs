@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrderReceipt from '@/components/admin/OrderReceipt';
+import html2canvas from 'html2canvas';
 
 type OrderStatus = 'Pending' | 'Preparing' | 'Ready' | 'Completed' | 'Cancelled';
 
@@ -44,13 +45,46 @@ export default function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [printingOrder, setPrintingOrder] = useState<Order | null>(null);
+  const [downloadingOrder, setDownloadingOrder] = useState<Order | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Print handler
   const handlePrint = (order: Order) => {
     setPrintingOrder(order);
     setTimeout(() => {
       window.print();
-    }, 200); // give react time to render
+    }, 300); // give react time to render
+  };
+
+  // Image Download handler
+  const handleDownloadImage = async (order: Order) => {
+    setDownloadingOrder(order);
+    setIsDownloading(true);
+    
+    // Give React time to render the hidden receipt
+    setTimeout(async () => {
+      const container = document.getElementById('printable-receipt-container');
+      if (container) {
+        try {
+          const canvas = await html2canvas(container, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+          });
+          const dataUrl = canvas.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = `QueenBean-Receipt-${order.id}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (err) {
+          console.error('Failed to generate receipt image', err);
+        }
+      }
+      setDownloadingOrder(null);
+      setIsDownloading(false);
+    }, 400);
   };
 
   useEffect(() => {
@@ -496,13 +530,32 @@ export default function OrdersPage() {
                     </button>
                   )}
 
-                  <button
-                    onClick={() => handlePrint(order)}
-                    className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors flex items-center justify-center gap-2"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                    Print
-                  </button>
+                  <div className="flex flex-1 sm:flex-none gap-2 min-w-fit">
+                    <button
+                      onClick={() => handlePrint(order)}
+                      className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                      Print (PDF)
+                    </button>
+                    <button
+                      onClick={() => handleDownloadImage(order)}
+                      disabled={isDownloading && downloadingOrder?.id === order.id}
+                      className="flex-1 bg-zinc-900 hover:bg-[#86603A] text-white px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                    >
+                      {isDownloading && downloadingOrder?.id === order.id ? (
+                        <>
+                          <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                          Save Image
+                        </>
+                      )}
+                    </button>
+                  </div>
 
                   {/* Delete button (always visible) */}
                   {deleteConfirm === order.id ? (
@@ -618,9 +671,16 @@ export default function OrdersPage() {
         </div>
       )}
 
-      {/* ── HIDDEN PRINT CONTAINER ── */}
-      <div id="printable-receipt-container" className={printingOrder ? 'block' : 'hidden'}>
-        {printingOrder && <OrderReceipt order={printingOrder} />}
+      {/* ── HIDDEN PRINT/DOWNLOAD CONTAINER ── */}
+      <div 
+        id="printable-receipt-container" 
+        className={
+          printingOrder || downloadingOrder 
+            ? 'fixed -left-[9999px] top-0 block print:static print:left-auto print:top-auto z-[-1]' 
+            : 'hidden'
+        }
+      >
+        {(printingOrder || downloadingOrder) && <OrderReceipt order={(printingOrder || downloadingOrder)!} />}
       </div>
     </div>
   );
