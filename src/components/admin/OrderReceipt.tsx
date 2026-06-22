@@ -38,7 +38,7 @@ export default function OrderReceipt({ order }: OrderReceiptProps) {
       <div className="flex flex-col items-center justify-center text-center pb-6 border-b-2 border-dashed border-zinc-300">
         <div className="w-24 h-24 mb-4">
           <img 
-            src="https://i.postimg.cc/yYLDhDS6/queen-been-logo.png" 
+            src="/queen-bean-logo.png" 
             alt="Queen Bean Logo" 
             className="w-full h-full object-contain"
           />
