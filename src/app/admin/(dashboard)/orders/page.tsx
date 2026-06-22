@@ -507,25 +507,25 @@ export default function OrdersPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="p-6 border-t border-zinc-200 bg-zinc-100/50 flex gap-3 flex-wrap">
+                <div className="p-5 border-t border-zinc-200 bg-white flex gap-3 flex-wrap items-center">
                   {/* Status actions */}
                   {order.status === 'Pending' && (
                     <>
-                      <button onClick={() => updateStatus(order.id, 'Preparing')} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors shadow-lg shadow-blue-600/20">
+                      <button onClick={() => updateStatus(order.id, 'Preparing')} className="flex-1 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-zinc-800 hover:to-zinc-700 text-white py-3 px-6 rounded-xl font-brandon font-bold uppercase tracking-widest text-[11px] transition-all hover:shadow-xl hover:shadow-zinc-900/10 hover:-translate-y-0.5">
                         Start Preparing
                       </button>
-                      <button onClick={() => updateStatus(order.id, 'Cancelled')} className="px-4 text-red-500 font-brandon font-bold uppercase tracking-widest text-xs hover:bg-red-50 rounded-xl transition-colors">
+                      <button onClick={() => updateStatus(order.id, 'Cancelled')} className="px-5 text-red-700/80 font-brandon font-bold uppercase tracking-widest text-[11px] hover:bg-red-50 hover:text-red-700 rounded-xl transition-all">
                         Cancel
                       </button>
                     </>
                   )}
                   {order.status === 'Preparing' && (
-                    <button onClick={() => updateStatus(order.id, 'Ready')} className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors shadow-lg shadow-green-600/20">
+                    <button onClick={() => updateStatus(order.id, 'Ready')} className="flex-1 bg-gradient-to-r from-emerald-800 to-emerald-900 hover:from-emerald-700 hover:to-emerald-800 text-white py-3 px-6 rounded-xl font-brandon font-bold uppercase tracking-widest text-[11px] transition-all hover:shadow-xl hover:shadow-emerald-900/10 hover:-translate-y-0.5">
                       Mark Ready
                     </button>
                   )}
                   {order.status === 'Ready' && (
-                    <button onClick={() => updateStatus(order.id, 'Completed')} className="flex-1 bg-black hover:bg-[#86603A] text-white py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors shadow-lg shadow-black/20">
+                    <button onClick={() => updateStatus(order.id, 'Completed')} className="flex-1 bg-gradient-to-r from-[#86603A] to-[#6C4B2C] hover:from-[#9C7043] hover:to-[#86603A] text-white py-3 px-6 rounded-xl font-brandon font-bold uppercase tracking-widest text-[11px] transition-all hover:shadow-xl hover:shadow-[#86603A]/20 hover:-translate-y-0.5">
                       Complete Order
                     </button>
                   )}
@@ -533,7 +533,7 @@ export default function OrdersPage() {
                   <div className="flex flex-1 sm:flex-none gap-2 min-w-fit">
                     <button
                       onClick={() => handlePrint(order)}
-                      className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors flex items-center justify-center gap-2"
+                      className="flex-1 bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-700 px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-md"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                       Print (PDF)
@@ -541,11 +541,11 @@ export default function OrdersPage() {
                     <button
                       onClick={() => handleDownloadImage(order)}
                       disabled={isDownloading && downloadingOrder?.id === order.id}
-                      className="flex-1 bg-zinc-900 hover:bg-[#86603A] text-white px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-xs transition-colors disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg"
+                      className="flex-1 bg-zinc-100 border border-zinc-200/50 hover:bg-zinc-200 hover:border-zinc-300 text-zinc-800 px-4 py-3 rounded-xl font-brandon font-bold uppercase tracking-widest text-[10px] transition-all disabled:opacity-50 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-md"
                     >
                       {isDownloading && downloadingOrder?.id === order.id ? (
                         <>
-                          <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          <div className="w-3 h-3 border-2 border-zinc-800/30 border-t-zinc-800 rounded-full animate-spin" />
                           Saving...
                         </>
                       ) : (
@@ -560,16 +560,16 @@ export default function OrdersPage() {
                   {/* Delete button (always visible) */}
                   {deleteConfirm === order.id ? (
                     <div className="flex items-center gap-2 ml-auto">
-                      <span className="text-xs font-brandon font-bold text-red-600">Delete forever?</span>
+                      <span className="text-[10px] font-brandon font-bold text-red-600 uppercase tracking-widest">Delete forever?</span>
                       <button
                         onClick={() => deleteOrder(order.id)}
-                        className="px-3 py-2 bg-red-600 text-white text-xs font-brandon font-bold rounded-lg hover:bg-red-700 transition-colors"
+                        className="px-3 py-2 bg-red-600 text-white text-[10px] uppercase tracking-widest font-brandon font-bold rounded-lg hover:bg-red-700 transition-colors"
                       >
                         Yes
                       </button>
                       <button
                         onClick={() => setDeleteConfirm(null)}
-                        className="px-3 py-2 bg-zinc-200 text-zinc-600 text-xs font-brandon font-bold rounded-lg hover:bg-zinc-300 transition-colors"
+                        className="px-3 py-2 bg-zinc-200 text-zinc-700 text-[10px] uppercase tracking-widest font-brandon font-bold rounded-lg hover:bg-zinc-300 transition-colors"
                       >
                         No
                       </button>
@@ -577,7 +577,7 @@ export default function OrdersPage() {
                   ) : (
                     <button
                       onClick={() => setDeleteConfirm(order.id)}
-                      className="ml-auto px-3 py-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                      className="ml-auto p-2 text-zinc-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
                       title="Delete order"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -676,7 +676,7 @@ export default function OrdersPage() {
         id="printable-receipt-container" 
         className={
           printingOrder || downloadingOrder 
-            ? 'fixed -left-[9999px] top-0 block print:static print:left-auto print:top-auto z-[-1]' 
+            ? 'absolute left-0 top-0 -z-50 pointer-events-none w-[400px] print:static print:z-auto print:pointer-events-auto print:w-full' 
             : 'hidden'
         }
       >
