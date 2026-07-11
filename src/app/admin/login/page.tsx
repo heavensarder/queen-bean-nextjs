@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#F2EFEB] flex flex-col justify-center items-center p-6">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -21,7 +21,7 @@ export default function LoginPage() {
       >
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <img src="https://i.postimg.cc/Yqr4m6jh/queen-been-icon.png" alt="Queen Bean" className="w-12 h-12 object-contain" />
+            <img src="https://i.postimg.cc/tgcybp58/icon.webp" alt="Queen Bean" className="w-12 h-12 object-contain" />
             <span className="text-2xl font-black font-brandon uppercase tracking-wider text-zinc-900">Queen Bean</span>
           </div>
           <h1 className="font-anton text-4xl uppercase tracking-wider text-zinc-900">Admin Portal</h1>
@@ -30,8 +30,8 @@ export default function LoginPage() {
         <form action={formAction} className="space-y-6">
           <div>
             <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">Email Address</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="email"
               required
               className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
@@ -41,8 +41,8 @@ export default function LoginPage() {
 
           <div>
             <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">Password</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="password"
               required
               className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 focus:border-[#86603A] transition-all"
@@ -51,7 +51,7 @@ export default function LoginPage() {
           </div>
 
           {state?.error && (
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               className="text-red-500 text-sm font-brandon font-bold text-center"
@@ -60,8 +60,8 @@ export default function LoginPage() {
             </motion.p>
           )}
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isPending}
             className="w-full bg-black text-white rounded-xl py-4 font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
           >

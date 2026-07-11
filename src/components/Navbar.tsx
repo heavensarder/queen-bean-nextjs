@@ -15,7 +15,7 @@ export default function Navbar() {
     <header className="fixed top-[10px] left-[10px] right-[10px] lg:top-[20px] lg:left-[20px] lg:right-[20px] z-[100] pointer-events-none">
       {/* Changed font to brandon and removed uppercase */}
       <div className="bg-white border border-black pointer-events-auto text-sm lg:text-base tracking-wide font-brandon font-normal text-black drop-shadow-sm flex flex-col">
-        
+
         {/* Desktop Layout (Hidden on Mobile) */}
         <div className="hidden lg:flex h-14 lg:h-16">
           <div className="flex-1 border-r border-black flex">
@@ -24,41 +24,47 @@ export default function Navbar() {
             <NavLink href="#" comingSoon>Magazine</NavLink>
             <NavLink href="#" comingSoon>Franchise</NavLink>
           </div>
-          
+
           <div className="flex items-center justify-center px-4 lg:px-8 border-r border-black flex-[1.5] overflow-hidden">
             <Link href="/" className="relative w-[280px] h-[50px] flex items-center">
-              <motion.div 
+              <motion.div
                 className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
-                animate={{ x: [120, 120, 0, 0, 0, 0, 120, 120], scale: [1.6, 1.6, 1, 1, 1, 1, 1.6, 1.6] }}
+                animate={{ x: [120, 120, 0, 0, 0, 0, 120, 120], scale: [1.45, 1.45, 1, 1, 1, 1, 1.45, 1.45] }}
                 transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
               >
-                <img 
-                  src="https://i.postimg.cc/Yqr4m6jh/queen-been-icon.png" 
-                  alt="Queen Bean Icon" 
-                  className="w-10 h-10 object-contain" 
+                <img
+                  src="https://i.postimg.cc/tgcybp58/icon.webp"
+                  alt="Queen Bean Icon"
+                  className="w-10 h-10 object-contain"
                 />
               </motion.div>
 
               <div className="absolute left-[52px] right-0 overflow-hidden h-full flex items-center">
-                <motion.div 
+                <motion.div
                   animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
                   transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-                  className="w-full"
+                  className="w-full flex flex-col justify-center"
                 >
-                  <span 
-                    className="text-3xl font-bold tracking-widest whitespace-nowrap uppercase block"
-                    style={{ fontFamily: '"Hatsch Sans", sans-serif', color: '#513626' }}
+                  <span
+                    className="text-3xl font-bold tracking-widest whitespace-nowrap uppercase block leading-none"
+                    style={{ fontFamily: 'var(--font-oswald), sans-serif', color: '#8B633E' }}
                   >
                     QUEEN BEAN
+                  </span>
+                  <span
+                    className="text-xs font-bold tracking-wide whitespace-nowrap block mt-[2px]"
+                    style={{ fontFamily: 'var(--font-poppins), sans-serif', color: '#8B633E' }}
+                  >
+                    The Daily Brunch
                   </span>
                 </motion.div>
               </div>
             </Link>
           </div>
-          
+
           <div className="flex-1 flex">
             <NavLink href="/menu" isActive={pathname === '/menu'}>Food Menu</NavLink>
-            <button 
+            <button
               onClick={() => setIsCartOpen(true)}
               className="relative flex-1 flex flex-col items-center justify-center transition-colors group border-r border-black hover:bg-zinc-50"
             >
@@ -81,29 +87,35 @@ export default function Navbar() {
         <div className="flex lg:hidden flex-col w-full">
           <div className="h-16 border-b border-black flex items-center justify-center overflow-hidden">
             <Link href="/" className="relative w-[220px] h-[40px] flex items-center">
-              <motion.div 
+              <motion.div
                 className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
-                animate={{ x: [96, 96, 0, 0, 0, 0, 96, 96], scale: [1.6, 1.6, 1, 1, 1, 1, 1.6, 1.6] }}
+                animate={{ x: [96, 96, 0, 0, 0, 0, 96, 96], scale: [1.45, 1.45, 1, 1, 1, 1, 1.45, 1.45] }}
                 transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
               >
-                <img 
-                  src="https://i.postimg.cc/Yqr4m6jh/queen-been-icon.png" 
-                  alt="Queen Bean Icon" 
-                  className="w-7 h-7 object-contain" 
+                <img
+                  src="https://i.postimg.cc/tgcybp58/icon.webp"
+                  alt="Queen Bean Icon"
+                  className="w-7 h-7 object-contain"
                 />
               </motion.div>
 
               <div className="absolute left-[36px] right-0 overflow-hidden h-full flex items-center">
-                <motion.div 
+                <motion.div
                   animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
                   transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-                  className="w-full"
+                  className="w-full flex flex-col justify-center"
                 >
-                  <span 
-                    className="text-xl font-bold tracking-widest whitespace-nowrap uppercase block"
-                    style={{ fontFamily: '"Hatsch Sans", sans-serif', color: '#513626' }}
+                  <span
+                    className="text-xl font-bold tracking-widest whitespace-nowrap uppercase block leading-none"
+                    style={{ fontFamily: 'var(--font-oswald), sans-serif', color: '#8B633E' }}
                   >
                     QUEEN BEAN
+                  </span>
+                  <span
+                    className="text-[10px] font-bold tracking-wide whitespace-nowrap block mt-[2px]"
+                    style={{ fontFamily: 'var(--font-poppins), sans-serif', color: '#8B633E' }}
+                  >
+                    The Daily Brunch
                   </span>
                 </motion.div>
               </div>
@@ -111,14 +123,14 @@ export default function Navbar() {
           </div>
           {/* Bottom Row: Menu Toggle, Cart & Locations */}
           <div className="h-12 flex">
-            <button 
+            <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex-1 border-r border-black flex items-center justify-center gap-2 hover:bg-zinc-100 transition-colors"
             >
               {isMenuOpen ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
               ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18" /></svg>
               )}
               <span>Menu</span>
             </button>
@@ -159,8 +171,8 @@ export default function Navbar() {
 
 function NavLink({ href, children, noBorder, isActive, comingSoon }: { href: string; children: React.ReactNode; noBorder?: boolean; isActive?: boolean; comingSoon?: boolean }) {
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       className={`relative flex-1 flex flex-col items-center justify-center transition-colors group
         ${noBorder ? '' : 'border-r border-black'} 
         ${isActive ? 'bg-[#86603A] text-white' : 'hover:bg-zinc-50'}`}
@@ -179,8 +191,8 @@ function NavLink({ href, children, noBorder, isActive, comingSoon }: { href: str
 
 function MobileNavLink({ href, children, noBorder, isActive, onClick, comingSoon }: { href: string; children: React.ReactNode; noBorder?: boolean; isActive?: boolean; onClick?: () => void; comingSoon?: boolean }) {
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       onClick={onClick}
       className={`relative h-16 flex flex-col items-center justify-center transition-colors group
         ${noBorder ? '' : 'border-b border-black'} 

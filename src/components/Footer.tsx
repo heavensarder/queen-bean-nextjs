@@ -15,28 +15,28 @@ export default function Footer() {
       <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-16 lg:gap-24 mb-24 relative z-10">
         
         {/* Left Brand Column */}
-        <div className="flex flex-col items-center lg:items-start lg:w-1/3 text-center lg:text-left">
+        <div className="flex flex-col items-center lg:w-1/3 text-center">
           <Link href="/" className="hover:opacity-80 transition-opacity mb-8">
             <img 
-              src="https://i.postimg.cc/sDjBZY1B/queen-been-white-logo.png" 
+              src="https://i.postimg.cc/rwCKq0Rq/logo-white.webp" 
               alt="Queen Bean Logo" 
-              className="h-16 lg:h-24 object-contain"
+              className="h-24 lg:h-36 object-contain"
             />
           </Link>
           
-          <div className="flex flex-col items-center lg:items-start gap-5 text-sm lg:text-base font-brandon font-medium text-zinc-400 mt-2">
+          <div className="flex flex-col items-center gap-5 text-sm lg:text-base font-brandon font-medium text-zinc-400 mt-2">
             <p className="leading-relaxed text-zinc-500">
               246 South 11th Street<br />
               Philadelphia, PA 19107
             </p>
-            <div className="flex flex-col items-center lg:items-start gap-3">
-              <a href="tel:2677614910" className="hover:text-white transition-colors flex items-center justify-center lg:justify-start gap-4 group">
+            <div className="flex flex-col items-center gap-3">
+              <a href="tel:2677614910" className="hover:text-white transition-colors flex items-center justify-center gap-4 group">
                 <span className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-zinc-500 bg-zinc-900/50 transition-colors shrink-0">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                 </span>
                 (267) 761-4910
               </a>
-              <a href="mailto:queenbeanphilly@gmail.com" className="hover:text-white transition-colors flex items-center justify-center lg:justify-start gap-4 group">
+              <a href="mailto:queenbeanphilly@gmail.com" className="hover:text-white transition-colors flex items-center justify-center gap-4 group">
                 <span className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-zinc-500 bg-zinc-900/50 transition-colors shrink-0">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 </span>
