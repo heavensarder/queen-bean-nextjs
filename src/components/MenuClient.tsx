@@ -86,7 +86,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
     <main className="bg-[#F2EFEB] min-h-screen">
       <Navbar />
       {/* ── HERO ─────────────────────────────────────── */}
-      <section className="relative pt-40 pb-20 lg:pt-48 lg:pb-28 px-6 flex flex-col items-center justify-center text-center">
+      <section className="relative pt-24 pb-12 lg:pt-32 lg:pb-16 px-6 flex flex-col items-center justify-center text-center">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,7 +99,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-anton text-6xl lg:text-9xl xl:text-[10rem] uppercase tracking-tight text-zinc-900 leading-[0.9]"
+          className="font-anton text-4xl lg:text-7xl xl:text-[5rem] uppercase tracking-tight text-zinc-900 leading-[0.9]"
         >
           Our Menu
         </motion.h1>
