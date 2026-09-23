@@ -4,6 +4,8 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { CartProvider } from "@/components/CartContext";
 import CartSidebar from "@/components/CartSidebar";
+import fs from 'fs/promises';
+import path from 'path';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,22 +40,57 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Queen Bean",
-  description: "A royal culinary experience.",
-};
+async function getSeoSettings() {
+  try {
+    const seoSettingsFile = path.join(process.cwd(), 'data', 'seo-settings.json');
+    const data = await fs.readFile(seoSettingsFile, 'utf-8');
+    return JSON.parse(data);
+  } catch (e) {
+    return {
+      title: "Queen Bean",
+      description: "A royal culinary experience.",
+      keywords: "",
+      ogImage: "",
+      jsonLd: ""
+    };
+  }
+}
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoSettings();
+  return {
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      images: seo.ogImage ? [{ url: seo.ogImage }] : [],
+    }
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const seo = await getSeoSettings();
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${greatVibes.variable} ${oswald.variable} ${poppins.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {seo.jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: seo.jsonLd }}
+          />
+        )}
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <CartProvider>
           <CartSidebar />
