@@ -450,7 +450,7 @@ function DetailModal({
   category: MenuCategory;
   onClose: () => void;
 }) {
-  const { addToCart } = useCart();
+  const { addToCart, isTakingOrders } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedAddOns, setSelectedAddOns] = useState<CartAddOn[]>([]);
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -497,7 +497,7 @@ function DetailModal({
     ...(item.extraIngredients || []),
   ];
 
-  const totalItemPrice = (basePrice + addOnsTotal) * quantity;
+  const totalItemPrice = (basePrice * quantity) + addOnsTotal;
 
   return (
     <motion.div
@@ -773,23 +773,41 @@ function DetailModal({
               </div>
 
               {/* Add to Cart Button */}
-              {item.isAvailable ? (
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-black text-white px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors shadow-xl flex items-center justify-between group"
-                >
-                  <span>Add to Cart</span>
-                  <span className="text-[#86603A] group-hover:text-white transition-colors">
-                    ${totalItemPrice.toFixed(2)}
-                  </span>
-                </button>
-              ) : (
+              {!item.isAvailable ? (
                 <button
                   disabled
                   className="flex-1 bg-zinc-200 text-zinc-500 px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold flex items-center justify-center cursor-not-allowed"
                 >
                   Item Currently Unavailable
                 </button>
+              ) : !isTakingOrders ? (
+                <div className="flex-1 flex flex-col sm:flex-row gap-3">
+                  <div className="bg-zinc-100 border border-zinc-200 rounded-xl px-6 py-4 flex items-center justify-center shadow-sm">
+                    <span className="font-anton text-2xl text-[#86603A]">
+                      ${totalItemPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    disabled
+                    className="flex-1 bg-zinc-200 text-zinc-500 px-4 py-4 rounded-xl font-brandon uppercase tracking-widest text-[10px] sm:text-xs font-bold flex items-center justify-center text-center cursor-not-allowed border border-zinc-300"
+                  >
+                    Not Taking Orders Right Now
+                  </button>
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col sm:flex-row gap-3">
+                  <div className="bg-zinc-100 border border-zinc-200 rounded-xl px-6 py-4 flex items-center justify-center shadow-sm">
+                    <span className="font-anton text-2xl text-[#86603A]">
+                      ${totalItemPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-black text-white px-6 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold hover:bg-[#86603A] transition-colors shadow-xl flex items-center justify-center group"
+                  >
+                    <span>Add to Cart</span>
+                  </button>
+                </div>
               )}
             </div>
           </motion.div>

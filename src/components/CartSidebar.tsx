@@ -8,7 +8,7 @@ import * as htmlToImage from 'html-to-image';
 import OrderReceipt, { OrderReceiptData } from './admin/OrderReceipt';
 
 export default function CartSidebar() {
-  const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart();
+  const { cartItems, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, cartTotal, clearCart, isTakingOrders } = useCart();
   const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3>(1); // 1: Cart, 2: Checkout Details, 3: Success
 
   // Checkout form state
@@ -190,7 +190,8 @@ export default function CartSidebar() {
                     </div>
                   ) : (
                     cartItems.map((item) => {
-                      const itemTotal = (item.price + item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0)) * item.quantity;
+                      const addOnsTotal = item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0);
+                      const itemTotal = (item.price * item.quantity) + addOnsTotal;
                       return (
                         <div key={item.id} className="flex gap-4 border-b border-zinc-100 pb-6 last:border-0">
                           <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-zinc-100">
@@ -206,7 +207,7 @@ export default function CartSidebar() {
                                   <div className="flex flex-col items-end">
                                     <span className="text-xs text-zinc-400 mb-0.5 whitespace-nowrap">
                                       {item.addOns.length > 0 
-                                        ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)} =` 
+                                        ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${addOnsTotal.toFixed(2)} =` 
                                         : `${item.quantity} × $${item.price.toFixed(2)} =`}
                                     </span>
                                     <span className="font-anton text-lg text-zinc-900">${itemTotal.toFixed(2)}</span>
@@ -247,17 +248,24 @@ export default function CartSidebar() {
                 {cartItems.length > 0 && (
                   <div className="p-6 bg-zinc-50 border-t border-zinc-200">
                     <div className="space-y-2 mb-6 font-brandon text-sm">
-                      <div className="flex justify-between text-zinc-900 font-bold text-lg pt-2">
-                        <span>Subtotal</span>
+                      <div className="flex justify-between items-end text-zinc-900 font-bold text-3xl pt-2">
+                        <span className="text-lg pb-1">Subtotal</span>
                         <span>${subtotal.toFixed(2)}</span>
                       </div>
                     </div>
-                    <button
-                      onClick={() => setCheckoutStep(2)}
-                      className="w-full bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg"
-                    >
-                      Proceed to Checkout
-                    </button>
+                    {isTakingOrders ? (
+                      <button
+                        onClick={() => setCheckoutStep(2)}
+                        className="w-full bg-black text-white py-4 rounded-xl font-brandon uppercase tracking-widest text-sm font-bold hover:bg-[#86603A] transition-colors shadow-lg"
+                      >
+                        Proceed to Checkout
+                      </button>
+                    ) : (
+                      <div className="w-full bg-zinc-200 text-zinc-500 py-4 rounded-xl font-brandon uppercase tracking-widest text-xs font-bold flex flex-col items-center justify-center text-center px-4 border border-zinc-300">
+                        <span className="text-zinc-600 mb-1">Not Taking Orders Right Now</span>
+                        <span className="text-[10px] text-zinc-400 normal-case tracking-normal">The store is currently closed for new orders.</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </>
@@ -417,7 +425,8 @@ export default function CartSidebar() {
                     <h4 className="font-brandon font-bold text-xs uppercase tracking-widest text-zinc-500 mb-3">Order Summary</h4>
                     <div className="space-y-4">
                       {cartItems.map((item) => {
-                        const itemTotal = (item.price + item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0)) * item.quantity;
+                        const addOnsTotal = item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0);
+                        const itemTotal = (item.price * item.quantity) + addOnsTotal;
                         return (
                           <div key={item.id} className="text-sm font-brandon pb-4 border-b border-zinc-100 last:border-0 last:pb-0">
                             <div className="flex justify-between items-start">
@@ -439,7 +448,7 @@ export default function CartSidebar() {
                                 {(item.quantity > 1 || item.addOns.length > 0) ? (
                                   <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest mt-2 pl-4">
                                     {item.addOns.length > 0 
-                                      ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${(item.addOns.reduce((sum, a) => sum + parseFloat(a.price.replace(/[^0-9.]/g, '') || '0'), 0) * item.quantity).toFixed(2)}`
+                                      ? `(${item.quantity} × $${item.price.toFixed(2)}) + $${addOnsTotal.toFixed(2)}`
                                       : `${item.quantity} × $${item.price.toFixed(2)}`}
                                   </div>
                                 ) : null}
@@ -470,8 +479,8 @@ export default function CartSidebar() {
                       <span>${tipAmount.toFixed(2)}</span>
                     </div>
                   </div>
-                  <div className="flex justify-between text-zinc-900 font-bold text-xl mb-6 pt-4 border-t border-zinc-200">
-                    <span>Total</span>
+                  <div className="flex justify-between items-end text-zinc-900 font-bold text-4xl mb-6 pt-4 border-t border-zinc-200">
+                    <span className="text-xl pb-1">Total</span>
                     <span>${grandTotal.toFixed(2)}</span>
                   </div>
                   <div className="flex flex-col-reverse md:flex-row gap-3">

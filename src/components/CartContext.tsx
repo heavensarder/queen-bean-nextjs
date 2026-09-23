@@ -29,6 +29,7 @@ interface CartContextType {
   itemCount: number;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
+  isTakingOrders: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -37,6 +38,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isTakingOrders, setIsTakingOrders] = useState(true);
+
+  // Fetch store settings on mount
+  useEffect(() => {
+    async function fetchStoreSettings() {
+      try {
+        const res = await fetch('/api/store-settings');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.content && data.content.isTakingOrders !== undefined) {
+            setIsTakingOrders(data.content.isTakingOrders);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch store settings');
+      }
+    }
+    fetchStoreSettings();
+  }, []);
 
   // Load from local storage on mount
   useEffect(() => {
@@ -91,7 +111,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       (sum, addon) => sum + parseFloat(addon.price.replace(/[^0-9.]/g, '') || '0'),
       0
     );
-    return total + (item.price + addOnsTotal) * item.quantity;
+    return total + (item.price * item.quantity) + addOnsTotal;
   }, 0);
 
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -108,6 +128,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         itemCount,
         isCartOpen,
         setIsCartOpen,
+        isTakingOrders,
       }}
     >
       {children}
