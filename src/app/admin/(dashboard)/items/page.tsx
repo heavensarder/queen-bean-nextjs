@@ -212,11 +212,18 @@ export default function ItemsPage() {
     }
 
     const method = editingItem ? 'PUT' : 'POST';
-    await fetch('/api/admin/items', {
+    const res = await fetch('/api/admin/items', {
       method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      alert(errorData.error || 'Failed to save item. Make sure all required fields are filled.');
+      setSaving(false);
+      return;
+    }
 
     if (!editingItem) {
       localStorage.removeItem('queenbean_item_draft');
@@ -746,7 +753,7 @@ export default function ItemsPage() {
                         alt="Preview"
                         fill
                         className="object-cover"
-                        unoptimized={formImage.startsWith('http')}
+                        unoptimized={true}
                       />
                     </div>
                   )}

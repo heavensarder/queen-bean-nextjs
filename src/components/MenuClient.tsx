@@ -9,7 +9,7 @@ import Navbar from '@/components/Navbar';
 import { useCart, type CartAddOn } from '@/components/CartContext';
 
 export default function MenuClient({ initialCategories }: { initialCategories: MenuCategory[] }) {
-  const [activeCategory, setActiveCategory] = useState(initialCategories[0].id);
+  const [activeCategory, setActiveCategory] = useState(initialCategories[0]?.id || '');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<{ item: MenuItem; category: MenuCategory } | null>(null);
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false);
@@ -315,9 +315,9 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
               </div>
 
               {/* Items Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-[1px] bg-transparent lg:bg-black lg:border lg:border-black px-4 lg:px-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-0 bg-transparent lg:border-t lg:border-l lg:border-black px-4 lg:px-0">
                 {category.items.map((item) => (
-                  <div key={item.id} className="w-full relative group bg-white cursor-pointer overflow-hidden rounded-2xl lg:rounded-none shadow-[0_8px_30px_rgb(0,0,0,0.08)] lg:shadow-none border border-zinc-200 lg:border-none">
+                  <div key={item.id} className="w-full relative group bg-white cursor-pointer overflow-hidden rounded-2xl lg:rounded-none shadow-[0_8px_30px_rgb(0,0,0,0.08)] lg:shadow-none border border-zinc-200 lg:border-r lg:border-b lg:border-black lg:border-t-0 lg:border-l-0">
                     <ItemCard
                       item={item}
                       categoryName={category.name}
