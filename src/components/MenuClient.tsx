@@ -365,6 +365,7 @@ function ItemCard({
           src={item.image}
           alt={item.name}
           fill
+          unoptimized={true}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
@@ -544,6 +545,7 @@ function DetailModal({
             src={item.image}
             alt={item.name}
             fill
+            unoptimized={true}
             sizes="(max-width: 1024px) 100vw, 60vw"
             className="object-cover"
             priority

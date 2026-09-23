@@ -54,6 +54,7 @@ export default function Hero({ content }: { content?: any }) {
             alt="Hero Background"
             fill
             priority
+            unoptimized={true}
             className="object-cover object-center"
             sizes="100vw"
           />
@@ -72,6 +73,7 @@ export default function Hero({ content }: { content?: any }) {
                 width={1000}
                 height={1000}
                 priority
+                unoptimized={true}
                 className="w-full h-auto object-contain drop-shadow-2xl"
               />
             )}

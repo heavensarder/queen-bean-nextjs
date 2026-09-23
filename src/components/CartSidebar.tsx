@@ -195,7 +195,7 @@ export default function CartSidebar() {
                       return (
                         <div key={item.id} className="flex gap-4 border-b border-zinc-100 pb-6 last:border-0">
                           <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 bg-zinc-100">
-                            <Image src={item.image} alt={item.name} fill className="object-cover" />
+                            <Image src={item.image} alt={item.name} fill unoptimized={true} className="object-cover" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start gap-2">
