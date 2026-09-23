@@ -2,6 +2,6 @@
   "title": "Queen Bean",
   "description": "A royal culinary experience.",
   "keywords": "Queen Bean, brunch, coffee, fine dining, restaurant",
-  "ogImage": "https://i.postimg.cc/qMkhYQnC/cover.png",
-  "jsonLd": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Restaurant\",\n  \"name\": \"Queen Bean\",\n  \"image\": \"https://i.postimg.cc/qMkhYQnC/cover.png\",\n  \"@id\": \"\",\n  \"url\": \"https://queenbean.com\",\n  \"telephone\": \"+1234567890\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"123 Queen St\",\n    \"addressLocality\": \"New York\",\n    \"addressRegion\": \"NY\",\n    \"postalCode\": \"10001\",\n    \"addressCountry\": \"US\"\n  },\n  \"menu\": \"https://queenbean.com/menu\",\n  \"servesCuisine\": [\"Brunch\", \"Coffee\", \"American\"],\n  \"priceRange\": \"$$\"\n}"
+  "ogImage": "/images/cover.png",
+  "jsonLd": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"Restaurant\",\n  \"name\": \"Queen Bean\",\n  \"image\": \"/images/cover.png\",\n  \"@id\": \"\",\n  \"url\": \"https://queenbean.com\",\n  \"telephone\": \"+1234567890\",\n  \"address\": {\n    \"@type\": \"PostalAddress\",\n    \"streetAddress\": \"123 Queen St\",\n    \"addressLocality\": \"New York\",\n    \"addressRegion\": \"NY\",\n    \"postalCode\": \"10001\",\n    \"addressCountry\": \"US\"\n  },\n  \"menu\": \"https://queenbean.com/menu\",\n  \"servesCuisine\": [\"Brunch\", \"Coffee\", \"American\"],\n  \"priceRange\": \"$$\"\n}"
 }

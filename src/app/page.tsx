@@ -10,8 +10,8 @@ import { getFrontendContent } from "@/lib/frontend";
 
 export default async function Home() {
   const homeHeroContent = await getFrontendContent('home_hero') || {
-    backgroundImage: "https://i.postimg.cc/J0HXDkNG/hero-background.jpg",
-    foodImage: "https://i.postimg.cc/gct4xyWZ/omelete-heroimage.png",
+    backgroundImage: "/images/hero-background.jpg",
+    foodImage: "/images/omelete-heroimage.png",
     texts: [
       "THIS IS NOT<br />JUST FOOD.",
       "THIS IS OUR<br />PHILOSOPHY.",
@@ -29,7 +29,7 @@ export default async function Home() {
     button1Link: "#",
     button2Text: "View menu",
     button2Link: "/menu",
-    image: "https://i.postimg.cc/pLTXCncL/customer-image-2nd-section.jpg"
+    image: "/images/customer-image-2nd-section.jpg"
   };
 
   const homeThirdContent = await getFrontendContent('home_third_section') || {
@@ -38,7 +38,7 @@ export default async function Home() {
     paragraph: "Our restaurants, much like the vibrant community around them, embody a blend of new and contemporary design with traditional bakery roots.",
     button1Text: "Find bakery",
     button1Link: "#locations",
-    image: "https://i.postimg.cc/7Yqbfnd0/restaurant-view-3rd-section.jpg"
+    image: "/images/restaurant-view-3rd-section.jpg"
   };
 
   const homeFourthContent = await getFrontendContent('home_fourth_section') || {
@@ -47,10 +47,10 @@ export default async function Home() {
     paragraph: "Our menu celebrates natural, honest ingredients, prepared fresh every day. And at the heart of it all is the bread that brings everything together.",
     button1Text: "Get Inspired by our Menu",
     button1Link: "/menu",
-    image1: "https://i.postimg.cc/4dTHwk2X/item-1.jpg",
-    image2: "https://i.postimg.cc/j5rnv03s/item-2.jpg",
-    image3: "https://i.postimg.cc/TwqL47B8/item-3.jpg",
-    image4: "https://i.postimg.cc/qRXh5bWV/item-4.jpg"
+    image1: "/images/item-1.jpg",
+    image2: "/images/item-2.jpg",
+    image3: "/images/item-3.jpg",
+    image4: "/images/item-4.jpg"
   };
 
   const homeFifthContent = await getFrontendContent('home_fifth_section') || {

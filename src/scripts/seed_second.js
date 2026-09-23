@@ -19,7 +19,7 @@ async function seed() {
       button1Link: "#",
       button2Text: "View menu",
       button2Link: "/menu",
-      image: "https://i.postimg.cc/pLTXCncL/customer-image-2nd-section.jpg"
+      image: "/images/customer-image-2nd-section.jpg"
     };
 
     await connection.query(

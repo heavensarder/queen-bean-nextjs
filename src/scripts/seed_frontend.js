@@ -22,8 +22,8 @@ async function seedFrontend() {
 
     console.log('Seeding home_hero content...');
     const defaultContent = {
-      backgroundImage: "https://i.postimg.cc/J0HXDkNG/hero-background.jpg",
-      foodImage: "https://i.postimg.cc/gct4xyWZ/omelete-heroimage.png",
+      backgroundImage: "/images/hero-background.jpg",
+      foodImage: "/images/omelete-heroimage.png",
       texts: [
         "THIS IS NOT<br />JUST FOOD.",
         "THIS IS OUR<br />PHILOSOPHY.",

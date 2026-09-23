@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="flex flex-col items-center lg:w-1/3 text-center">
           <Link href="/" className="hover:opacity-80 transition-opacity mb-8">
             <img 
-              src="https://i.postimg.cc/rwCKq0Rq/logo-white.webp" 
+              src="/images/logo-white.webp" 
               alt="Queen Bean Logo" 
               className="h-24 lg:h-36 object-contain"
             />

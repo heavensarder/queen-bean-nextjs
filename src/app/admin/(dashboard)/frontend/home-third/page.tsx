@@ -13,7 +13,7 @@ export default function HomeThirdEditPage() {
   const [paragraph, setParagraph] = useState('Our restaurants, much like the vibrant community around them, embody a blend of new and contemporary design with traditional bakery roots.');
   const [button1Text, setButton1Text] = useState('Find bakery');
   const [button1Link, setButton1Link] = useState('#locations');
-  const [image, setImage] = useState('https://i.postimg.cc/7Yqbfnd0/restaurant-view-3rd-section.jpg');
+  const [image, setImage] = useState('/images/restaurant-view-3rd-section.jpg');
 
   const [imageMode, setImageMode] = useState<'upload' | 'url'>('url');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,7 +31,7 @@ export default function HomeThirdEditPage() {
             setParagraph(data.content.paragraph || 'Our restaurants, much like the vibrant community around them, embody a blend of new and contemporary design with traditional bakery roots.');
             setButton1Text(data.content.button1Text || 'Find bakery');
             setButton1Link(data.content.button1Link || '#locations');
-            setImage(data.content.image || 'https://i.postimg.cc/7Yqbfnd0/restaurant-view-3rd-section.jpg');
+            setImage(data.content.image || '/images/restaurant-view-3rd-section.jpg');
           }
         }
       } catch (error) {

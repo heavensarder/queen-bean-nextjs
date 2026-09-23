@@ -22,7 +22,7 @@ export default function ThirdSection({ content }: { content?: any }) {
   const paragraph = content?.paragraph || "Our restaurants, much like the vibrant community around them, embody a blend of new and contemporary design with traditional bakery roots.";
   const button1Text = content?.button1Text || "Find bakery";
   const button1Link = content?.button1Link || "#locations";
-  const image = content?.image || "https://i.postimg.cc/7Yqbfnd0/restaurant-view-3rd-section.jpg";
+  const image = content?.image || "/images/restaurant-view-3rd-section.jpg";
 
   return (
     <section ref={containerRef} className="relative z-40 w-full p-[10px] lg:p-[20px] bg-[#F2EFEB]">

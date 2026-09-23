@@ -21,7 +21,7 @@ export default function LoginPage() {
       >
         <div className="text-center mb-10">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <img src="https://i.postimg.cc/tgcybp58/icon.webp" alt="Queen Bean" className="w-12 h-12 object-contain" />
+            <img src="/images/icon.webp" alt="Queen Bean" className="w-12 h-12 object-contain" />
             <span className="text-2xl font-black font-brandon uppercase tracking-wider text-zinc-900">Queen Bean</span>
           </div>
           <h1 className="font-anton text-4xl uppercase tracking-wider text-zinc-900">Admin Portal</h1>

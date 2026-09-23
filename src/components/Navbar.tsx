@@ -33,7 +33,7 @@ export default function Navbar() {
                 transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
               >
                 <img
-                  src="https://i.postimg.cc/tgcybp58/icon.webp"
+                  src="/images/icon.webp"
                   alt="Queen Bean Icon"
                   className="w-10 h-10 object-contain"
                 />
@@ -93,7 +93,7 @@ export default function Navbar() {
                 transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
               >
                 <img
-                  src="https://i.postimg.cc/tgcybp58/icon.webp"
+                  src="/images/icon.webp"
                   alt="Queen Bean Icon"
                   className="w-7 h-7 object-contain"
                 />

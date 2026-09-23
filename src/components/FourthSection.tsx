@@ -9,10 +9,10 @@ export default function FourthSection({ content }: { content?: any }) {
   const paragraph = content?.paragraph || "Our menu celebrates natural, honest ingredients, prepared fresh every day. And at the heart of it all is the bread that brings everything together.";
   const button1Text = content?.button1Text || "Get Inspired by our Menu";
   const button1Link = content?.button1Link || "/menu";
-  const image1 = content?.image1 || "https://i.postimg.cc/4dTHwk2X/item-1.jpg";
-  const image2 = content?.image2 || "https://i.postimg.cc/j5rnv03s/item-2.jpg";
-  const image3 = content?.image3 || "https://i.postimg.cc/TwqL47B8/item-3.jpg";
-  const image4 = content?.image4 || "https://i.postimg.cc/qRXh5bWV/item-4.jpg";
+  const image1 = content?.image1 || "/images/item-1.jpg";
+  const image2 = content?.image2 || "/images/item-2.jpg";
+  const image3 = content?.image3 || "/images/item-3.jpg";
+  const image4 = content?.image4 || "/images/item-4.jpg";
 
   return (
     <section className="relative z-50 w-full bg-[#F2EFEB] pt-16 lg:pt-24 pb-0 overflow-hidden">
