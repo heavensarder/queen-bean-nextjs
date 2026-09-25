@@ -9,6 +9,8 @@ export interface MailConfig {
   smtpPort: number;
   smtpUsername: string;
   smtpPassword: string;
+  emailSubject?: string;
+  emailTemplate?: string;
 }
 
 /**

@@ -109,10 +109,10 @@ export async function POST(request: NextRequest) {
 
     // Send the contact email to the receiver
     await transporter.sendMail({
-      from: \`"\${config.forceSenderName || 'Queen Bean Website'}" <\${config.senderEmail}>\`,
+      from: `"${config.forceSenderName || 'Queen Bean Website'}" <${config.senderEmail}>`,
       to: config.receiverEmail,
       replyTo: email,
-      subject: config.emailSubject ? config.emailSubject.replace(/{{subject}}/g, escapeHtml(subject)) : \`Contact Form: \${subject}\`,
+      subject: config.emailSubject ? config.emailSubject.replace(/{{subject}}/g, escapeHtml(subject)) : `Contact Form: ${subject}`,
       html: finalHtml,
     });
 
