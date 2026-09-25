@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="bg-white border border-black pointer-events-auto text-sm lg:text-base tracking-wide font-brandon font-normal text-black drop-shadow-sm flex flex-col">
 
         {/* Desktop Layout (Hidden on Mobile) */}
-        <div className="hidden lg:flex h-14 lg:h-16">
+        <div className="hidden lg:flex h-16 lg:h-20">
           <div className="flex-1 border-r border-black flex">
             <NavLink href="/" isActive={pathname === '/'}>Home</NavLink>
             <NavLink href="#" comingSoon>Atelier</NavLink>
@@ -26,39 +26,12 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center justify-center px-4 lg:px-8 border-r border-black flex-[1.5] overflow-hidden">
-            <Link href="/" className="relative w-[280px] h-[50px] flex items-center">
-              <motion.div
-                className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
-                animate={{ x: [120, 120, 0, 0, 0, 0, 120, 120], scale: [1.45, 1.45, 1, 1, 1, 1, 1.45, 1.45] }}
-                transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-              >
-                <img
-                  src="/images/icon.webp"
-                  alt="Queen Bean Icon"
-                  className="w-10 h-10 object-contain"
-                />
-              </motion.div>
-
-              <div className="absolute left-[52px] right-0 overflow-hidden h-full flex items-center">
-                <motion.div
-                  animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
-                  transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-                  className="w-full flex flex-col justify-center"
-                >
-                  <span
-                    className="text-3xl font-bold tracking-widest whitespace-nowrap uppercase block leading-none"
-                    style={{ fontFamily: 'var(--font-oswald), sans-serif', color: '#8B633E' }}
-                  >
-                    QUEEN BEAN
-                  </span>
-                  <span
-                    className="text-xs font-bold tracking-wide whitespace-nowrap block mt-[2px]"
-                    style={{ fontFamily: 'var(--font-poppins), sans-serif', color: '#8B633E' }}
-                  >
-                    The Daily Brunch
-                  </span>
-                </motion.div>
-              </div>
+            <Link href="/" className="relative flex items-center justify-center h-full w-full">
+              <img
+                src="/images/main-logo.png"
+                alt="Queen Bean Logo"
+                className="h-14 lg:h-[4.5rem] w-auto object-contain"
+              />
             </Link>
           </div>
 
@@ -85,40 +58,13 @@ export default function Navbar() {
 
         {/* Mobile Layout (Hidden on Desktop) */}
         <div className="flex lg:hidden flex-col w-full">
-          <div className="h-16 border-b border-black flex items-center justify-center overflow-hidden">
-            <Link href="/" className="relative w-[220px] h-[40px] flex items-center">
-              <motion.div
-                className="absolute left-0 z-10 flex items-center justify-center bg-white rounded-full"
-                animate={{ x: [96, 96, 0, 0, 0, 0, 96, 96], scale: [1.45, 1.45, 1, 1, 1, 1, 1.45, 1.45] }}
-                transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-              >
-                <img
-                  src="/images/icon.webp"
-                  alt="Queen Bean Icon"
-                  className="w-7 h-7 object-contain"
-                />
-              </motion.div>
-
-              <div className="absolute left-[36px] right-0 overflow-hidden h-full flex items-center">
-                <motion.div
-                  animate={{ x: ["-105%", "-105%", "-105%", "0%", "0%", "-105%", "-105%", "-105%"] }}
-                  transition={{ duration: 10, times: [0, 0.15, 0.25, 0.35, 0.65, 0.75, 0.85, 1], repeat: Infinity, ease: "easeInOut" }}
-                  className="w-full flex flex-col justify-center"
-                >
-                  <span
-                    className="text-xl font-bold tracking-widest whitespace-nowrap uppercase block leading-none"
-                    style={{ fontFamily: 'var(--font-oswald), sans-serif', color: '#8B633E' }}
-                  >
-                    QUEEN BEAN
-                  </span>
-                  <span
-                    className="text-[10px] font-bold tracking-wide whitespace-nowrap block mt-[2px]"
-                    style={{ fontFamily: 'var(--font-poppins), sans-serif', color: '#8B633E' }}
-                  >
-                    The Daily Brunch
-                  </span>
-                </motion.div>
-              </div>
+          <div className="h-20 border-b border-black flex items-center justify-center overflow-hidden">
+            <Link href="/" className="relative flex items-center justify-center h-full w-full">
+              <img
+                src="/images/main-logo.png"
+                alt="Queen Bean Logo"
+                className="h-16 w-auto object-contain"
+              />
             </Link>
           </div>
           {/* Bottom Row: Menu Toggle, Cart & Locations */}

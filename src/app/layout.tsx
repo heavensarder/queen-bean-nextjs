@@ -62,6 +62,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
+    icons: {
+      icon: "/images/favicon.svg",
+    },
     openGraph: {
       title: seo.title,
       description: seo.description,

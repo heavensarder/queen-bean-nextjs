@@ -86,7 +86,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
     <main className="bg-[#F2EFEB] min-h-screen">
       <Navbar />
       {/* ── HERO ─────────────────────────────────────── */}
-      <section className="relative pt-24 pb-12 lg:pt-32 lg:pb-16 px-6 flex flex-col items-center justify-center text-center">
+      <section className="relative pt-40 pb-12 lg:pt-40 lg:pb-16 px-6 flex flex-col items-center justify-center text-center">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -186,7 +186,7 @@ export default function MenuClient({ initialCategories }: { initialCategories: M
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
-            Food Category Menu / {displayCategories.find(c => c.id === activeCategory)?.name || (displayCategories.length > 0 ? displayCategories[0].name : 'Search')}
+            Food Category Menu
           </button>
         </div>
 
