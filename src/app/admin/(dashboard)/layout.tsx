@@ -73,9 +73,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar (Desktop) */}
       <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-zinc-200 sticky top-0 h-screen">
         <div className="h-20 flex items-center justify-center border-b border-zinc-200">
-          <Link href="/admin" className="flex items-center gap-2.5">
-            <img src="/images/icon.webp" alt="Queen Bean" className="w-9 h-9 object-contain" />
-            <span className="text-xl font-black font-brandon uppercase tracking-wider text-zinc-900">Queen Bean</span>
+          <Link href="/admin" className="flex items-center justify-center">
+            <img src="/images/main-logo.png" alt="Queen Bean" className="h-14 w-auto object-contain" />
           </Link>
         </div>
 
@@ -115,9 +114,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Mobile Header */}
       <header className="lg:hidden bg-white border-b border-zinc-200">
         <div className="h-16 flex items-center justify-between px-6">
-          <Link href="/admin" className="flex items-center gap-2">
-            <img src="/images/icon.webp" alt="Queen Bean" className="w-8 h-8 object-contain" />
-            <span className="text-lg font-black font-brandon uppercase tracking-wider text-zinc-900">Queen Bean</span>
+          <Link href="/admin" className="flex items-center">
+            <img src="/images/main-logo.png" alt="Queen Bean" className="h-10 w-auto object-contain" />
           </Link>
           <div className="flex items-center gap-3">
             <button
