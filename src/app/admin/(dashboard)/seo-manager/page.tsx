@@ -197,7 +197,7 @@ export default function SEOManagerPage() {
                 <div>
                   <input ref={ogFileInputRef} type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setUploadingOg, (url) => setSettings({ ...settings, ogImage: url }))} className="hidden" />
                   <button onClick={() => ogFileInputRef.current?.click()} disabled={uploadingOg} className="w-full border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:border-[#86603A] hover:bg-[#86603A]/5 transition-colors disabled:opacity-50 font-brandon text-zinc-600 font-semibold">
-                    {uploadingOg ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+                    {uploadingOg ? 'Uploading...' : 'Click to upload (Max 1MB)'}
                   </button>
                 </div>
               )}

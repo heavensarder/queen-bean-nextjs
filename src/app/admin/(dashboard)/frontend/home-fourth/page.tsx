@@ -156,7 +156,7 @@ export default function HomeFourthEditPage() {
         <div>
           <input ref={fileRef} type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setUploading, setImage)} className="hidden" />
           <button onClick={() => fileRef.current?.click()} disabled={uploading} className="w-full bg-white border-2 border-dashed border-zinc-300 rounded-lg p-4 text-center hover:border-[#86603A] transition-colors disabled:opacity-50 font-brandon text-sm">
-            {uploading ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+            {uploading ? 'Uploading...' : 'Click to upload (Max 1MB)'}
           </button>
         </div>
       )}

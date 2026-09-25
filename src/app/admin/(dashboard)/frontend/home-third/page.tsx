@@ -205,7 +205,7 @@ export default function HomeThirdEditPage() {
               <div>
                 <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 <button onClick={() => fileInputRef.current?.click()} disabled={uploading} className="w-full border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:border-[#86603A] hover:bg-[#86603A]/5 transition-colors disabled:opacity-50">
-                  {uploading ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+                  {uploading ? 'Uploading...' : 'Click to upload (Max 1MB)'}
                 </button>
               </div>
             )}

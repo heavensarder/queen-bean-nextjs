@@ -337,7 +337,7 @@ export default function CartSidebar() {
                               type="checkbox"
                               checked={orderInfo === 'ASAP'}
                               onChange={(e) => setOrderInfo(e.target.checked ? 'ASAP' : '')}
-                              className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                              className="w-5 h-5 rounded border-zinc-300 text-[#8A623D] focus:ring-[#8A623D] accent-[#8A623D]"
                             />
                             <span className="font-brandon text-sm font-bold text-zinc-900">ASAP (As soon as possible)</span>
                           </label>

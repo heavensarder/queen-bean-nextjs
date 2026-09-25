@@ -151,7 +151,7 @@ export default function HomeHeroEditPage() {
               <div>
                 <input ref={bgFileInputRef} type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setUploadingBg, setBgImage)} className="hidden" />
                 <button onClick={() => bgFileInputRef.current?.click()} disabled={uploadingBg} className="w-full border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:border-[#86603A] hover:bg-[#86603A]/5 transition-colors disabled:opacity-50">
-                  {uploadingBg ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+                  {uploadingBg ? 'Uploading...' : 'Click to upload (Max 1MB)'}
                 </button>
               </div>
             )}
@@ -183,7 +183,7 @@ export default function HomeHeroEditPage() {
               <div>
                 <input ref={foodFileInputRef} type="file" accept="image/*" onChange={(e) => handleFileUpload(e, setUploadingFood, setFoodImage)} className="hidden" />
                 <button onClick={() => foodFileInputRef.current?.click()} disabled={uploadingFood} className="w-full border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:border-[#86603A] hover:bg-[#86603A]/5 transition-colors disabled:opacity-50">
-                  {uploadingFood ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+                  {uploadingFood ? 'Uploading...' : 'Click to upload (Max 1MB)'}
                 </button>
               </div>
             )}

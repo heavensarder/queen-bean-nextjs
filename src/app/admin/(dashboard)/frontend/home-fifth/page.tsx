@@ -155,7 +155,7 @@ export default function HomeFifthEditPage() {
               <div>
                 <input ref={videoInputRef} type="file" accept="video/mp4,video/webm" onChange={(e) => handleFileUpload(e, setUploadingVideo, setVideoUrl)} className="hidden" />
                 <button onClick={() => videoInputRef.current?.click()} disabled={uploadingVideo} className="w-full border-2 border-dashed border-zinc-300 rounded-xl p-6 text-center hover:border-[#86603A] hover:bg-[#86603A]/5 transition-colors disabled:opacity-50">
-                  {uploadingVideo ? 'Uploading...' : 'Click to upload (Max 5MB)'}
+                  {uploadingVideo ? 'Uploading...' : 'Click to upload (Max 1MB)'}
                 </button>
               </div>
             )}

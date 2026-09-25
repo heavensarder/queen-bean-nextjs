@@ -723,7 +723,7 @@ function DetailModal({
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => handleAddOnToggle(addon)}
-                          className="w-5 h-5 rounded border-zinc-300 text-[#86603A] focus:ring-[#86603A]"
+                          className="w-5 h-5 rounded border-zinc-300 text-[#8A623D] focus:ring-[#8A623D] accent-[#8A623D]"
                         />
                         <span className="font-brandon font-semibold text-zinc-900">{addon.name}</span>
                       </div>
@@ -764,21 +764,23 @@ function DetailModal({
           >
             <div className="flex items-center gap-4">
               {/* Quantity */}
-              <div className="flex items-center bg-zinc-100 rounded-xl p-1 shrink-0">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-                <span className="w-8 text-center font-anton text-lg">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                </button>
-              </div>
+              {isTakingOrders && item.isAvailable && (
+                <div className="flex items-center bg-zinc-100 rounded-xl p-1 shrink-0">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </button>
+                  <span className="w-8 text-center font-anton text-lg">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="w-10 h-10 flex items-center justify-center text-zinc-500 hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  </button>
+                </div>
+              )}
 
               {/* Add to Cart Button */}
               {!item.isAvailable ? (
