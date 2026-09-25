@@ -65,6 +65,10 @@ export async function generateMetadata(): Promise<Metadata> {
       ? `https://${process.env.VERCEL_URL}` 
       : 'http://localhost:3000';
 
+  const resolvedOgImage = seo.ogImage 
+    ? (seo.ogImage.startsWith('http') ? seo.ogImage : `${baseUrl}${seo.ogImage}`)
+    : '';
+
   return {
     metadataBase: new URL(baseUrl),
     title: seo.title,
@@ -76,14 +80,15 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo.title,
       description: seo.description,
-      images: seo.ogImage ? [{ url: seo.ogImage, width: 1200, height: 630 }] : [],
+      url: baseUrl,
+      images: resolvedOgImage ? [{ url: resolvedOgImage, width: 1200, height: 630 }] : [],
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: seo.title,
       description: seo.description,
-      images: seo.ogImage ? [seo.ogImage] : [],
+      images: resolvedOgImage ? [resolvedOgImage] : [],
     },
   };
 }
