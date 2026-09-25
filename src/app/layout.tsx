@@ -58,7 +58,15 @@ async function getSeoSettings() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoSettings();
+  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL 
+    ? (process.env.NEXT_PUBLIC_BASE_URL.startsWith('http') ? process.env.NEXT_PUBLIC_BASE_URL : `https://${process.env.NEXT_PUBLIC_BASE_URL}`)
+    : process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+
   return {
+    metadataBase: new URL(baseUrl),
     title: seo.title,
     description: seo.description,
     keywords: seo.keywords,
@@ -68,8 +76,15 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo.title,
       description: seo.description,
-      images: seo.ogImage ? [{ url: seo.ogImage }] : [],
-    }
+      images: seo.ogImage ? [{ url: seo.ogImage, width: 1200, height: 630 }] : [],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: seo.title,
+      description: seo.description,
+      images: seo.ogImage ? [seo.ogImage] : [],
+    },
   };
 }
 

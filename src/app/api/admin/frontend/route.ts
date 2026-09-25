@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { query } from '@/lib/db';
 import { decrypt } from '@/lib/session';
 
@@ -60,6 +61,9 @@ export async function PUT(request: NextRequest) {
        ON DUPLICATE KEY UPDATE content = VALUES(content)`,
       [section_id, JSON.stringify(content)]
     );
+    
+    // Invalidate the root layout cache so frontend changes appear immediately
+    revalidatePath('/', 'layout');
     
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -37,6 +37,8 @@ export async function GET() {
   }
 }
 
+import { revalidatePath } from 'next/cache';
+
 export async function POST(request: Request) {
   try {
     await ensureDataFile();
@@ -46,6 +48,9 @@ export async function POST(request: Request) {
     const newData = { ...defaultSettings, ...data };
     
     await fs.writeFile(seoSettingsFile, JSON.stringify(newData, null, 2));
+    
+    // Invalidate cache for layout so new metadata takes effect immediately
+    revalidatePath('/', 'layout');
     
     return NextResponse.json({ success: true, settings: newData });
   } catch (error) {
