@@ -3,6 +3,44 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const DEFAULT_TEMPLATE = `
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 0;">
+  <div style="text-align: center; margin-bottom: 32px;">
+    <h1 style="font-size: 24px; color: #1a1a1a; margin: 0; letter-spacing: 3px; text-transform: uppercase;">Queen Bean</h1>
+    <p style="color: #86603A; font-size: 15px; margin-top: 4px; font-style: italic;">New Contact Form Submission</p>
+  </div>
+  
+  <div style="background: #fdfbf7; border: 1px solid #e4e0d9; border-radius: 12px; padding: 32px;">
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #999; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; width: 100px; vertical-align: top;">Name</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #1a1a1a; font-size: 15px;">{{name}}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #999; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; vertical-align: top;">Email</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #1a1a1a; font-size: 15px;">
+          <a href="mailto:{{email}}" style="color: #86603A; text-decoration: none;">{{email}}</a>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #999; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; vertical-align: top;">Subject</td>
+        <td style="padding: 12px 0; border-bottom: 1px solid #e4e0d9; color: #1a1a1a; font-size: 15px;">{{subject}}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 0; color: #999; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; vertical-align: top;">Message</td>
+        <td style="padding: 12px 0; color: #1a1a1a; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">{{message}}</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div style="text-align: center; margin-top: 24px;">
+    <p style="color: #999; font-size: 12px;">
+      You can reply directly to this email to respond to <strong>{{name}}</strong>.
+    </p>
+  </div>
+</div>
+`.trim();
+
 export default function MailConfigPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -23,6 +61,8 @@ export default function MailConfigPage() {
   const [smtpUsername, setSmtpUsername] = useState('');
   const [smtpPassword, setSmtpPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [emailSubject, setEmailSubject] = useState('Contact Form: {{subject}}');
+  const [emailTemplate, setEmailTemplate] = useState(DEFAULT_TEMPLATE);
 
   const showToast = (type: 'success' | 'error', message: string) => {
     setToast({ type, message });
@@ -44,6 +84,8 @@ export default function MailConfigPage() {
             setSmtpPort(String(c.smtpPort || 587));
             setSmtpUsername(c.smtpUsername || '');
             setSmtpPassword(c.smtpPassword || '');
+            setEmailSubject(c.emailSubject || 'Contact Form: {{subject}}');
+            setEmailTemplate(c.emailTemplate || DEFAULT_TEMPLATE);
             setHasExistingConfig(true);
           }
         }
@@ -76,6 +118,8 @@ export default function MailConfigPage() {
             smtpPort: parseInt(smtpPort) || 587,
             smtpUsername,
             smtpPassword,
+            emailSubject,
+            emailTemplate,
           },
         }),
       });
@@ -417,6 +461,71 @@ export default function MailConfigPage() {
                         </svg>
                       )}
                     </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Email Template */}
+            <div>
+              <h3 className="font-anton text-xl tracking-wider uppercase text-zinc-900 mb-4 flex items-center gap-2 border-b border-zinc-100 pb-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Email Template Design
+              </h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                    Email Subject
+                  </label>
+                  <p className="font-brandon text-[11px] text-zinc-400 mb-2">You can use <code className="bg-zinc-100 px-1 py-0.5 rounded text-xs">{"{{subject}}"}</code> variable.</p>
+                  <input
+                    type="text"
+                    value={emailSubject}
+                    onChange={(e) => setEmailSubject(e.target.value)}
+                    disabled={locked}
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-brandon focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 disabled:opacity-60 disabled:cursor-not-allowed transition-opacity"
+                    placeholder="Contact Form: {{subject}}"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                      HTML Template Body
+                    </label>
+                    <p className="font-brandon text-[11px] text-zinc-400 mb-2">
+                      Available variables: <code className="bg-zinc-100 px-1 py-0.5 rounded text-xs">{"{{name}}"}</code>, <code className="bg-zinc-100 px-1 py-0.5 rounded text-xs">{"{{email}}"}</code>, <code className="bg-zinc-100 px-1 py-0.5 rounded text-xs">{"{{subject}}"}</code>, <code className="bg-zinc-100 px-1 py-0.5 rounded text-xs">{"{{message}}"}</code>
+                    </p>
+                    <textarea
+                      value={emailTemplate}
+                      onChange={(e) => setEmailTemplate(e.target.value)}
+                      disabled={locked}
+                      rows={15}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-[#86603A]/50 disabled:opacity-60 disabled:cursor-not-allowed transition-opacity"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-brandon text-xs uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                      Live Preview
+                    </label>
+                    <p className="font-brandon text-[11px] text-zinc-400 mb-2">Preview with sample data</p>
+                    <div className="w-full bg-white border border-zinc-200 rounded-xl overflow-hidden h-full min-h-[340px] overflow-y-auto p-4 shadow-inner">
+                      <div dangerouslySetInnerHTML={{
+                        __html: (emailTemplate || DEFAULT_TEMPLATE)
+                          .replace(/{{name}}/g, 'John Doe')
+                          .replace(/{{email}}/g, 'john@example.com')
+                          .replace(/{{subject}}/g, 'Catering Inquiry')
+                          .replace(/{{message}}/g, 'Hello, I would like to order catering for 50 people next week.')
+                      }} />
+                    </div>
                   </div>
                 </div>
               </div>
