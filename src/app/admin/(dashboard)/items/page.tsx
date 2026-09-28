@@ -212,26 +212,37 @@ export default function ItemsPage() {
     }
 
     const method = editingItem ? 'PUT' : 'POST';
-    const res = await fetch('/api/admin/items', {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch('/api/admin/items', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      alert(errorData.error || 'Failed to save item. Make sure all required fields are filled.');
+      if (!res.ok) {
+        let errorMessage = 'Failed to save item. Make sure all required fields are filled.';
+        try {
+          const errorData = await res.json();
+          if (errorData.error) errorMessage = errorData.error;
+        } catch (e) {
+          // Server might have returned a 500 HTML page instead of JSON
+        }
+        alert(errorMessage);
+        setSaving(false);
+        return;
+      }
+
+      if (!editingItem) {
+        localStorage.removeItem('queenbean_item_draft');
+      }
+
       setSaving(false);
-      return;
+      setShowModal(false);
+      fetchItems();
+    } catch (error) {
+      alert('Network error or server is unreachable.');
+      setSaving(false);
     }
-
-    if (!editingItem) {
-      localStorage.removeItem('queenbean_item_draft');
-    }
-
-    setSaving(false);
-    setShowModal(false);
-    fetchItems();
   };
 
   const handleDelete = async (id: string) => {
