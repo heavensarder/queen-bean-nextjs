@@ -45,9 +45,9 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, sizes } = body;
 
-  if (!category_id || !name || !price || !image) {
+  if (!category_id || !name || !price) {
     return NextResponse.json(
-      { error: 'category_id, name, price, and image are required' },
+      { error: 'category_id, name, and price are required' },
       { status: 400 }
     );
   }
@@ -74,9 +74,7 @@ export async function POST(request: NextRequest) {
       description || null,
       price,
       calories || null,
-      sodium || null,
-      image,
-      tags && tags.length > 0 ? JSON.stringify(tags) : null,
+      image || null,
       is_available !== undefined ? is_available : true,
       extra_ingredients && extra_ingredients.length > 0 ? JSON.stringify(extra_ingredients) : null,
       sizes && sizes.length > 0 ? JSON.stringify(sizes) : null,
@@ -96,9 +94,9 @@ export async function PUT(request: NextRequest) {
   const body = await request.json();
   const { id, category_id, name, description, price, calories, sodium, image, tags, is_available, extra_ingredients, sizes } = body;
 
-  if (!id || !name || !price || !image) {
+  if (!id || !name || !price) {
     return NextResponse.json(
-      { error: 'id, name, price, and image are required' },
+      { error: 'id, name, and price are required' },
       { status: 400 }
     );
   }
@@ -112,7 +110,7 @@ export async function PUT(request: NextRequest) {
       price,
       calories || null,
       sodium || null,
-      image,
+      image || null,
       tags && tags.length > 0 ? JSON.stringify(tags) : null,
       is_available !== undefined ? is_available : true,
       extra_ingredients && extra_ingredients.length > 0 ? JSON.stringify(extra_ingredients) : null,
