@@ -361,22 +361,14 @@ function ItemCard({
     <div className={`w-full h-full cursor-pointer group ${!item.isAvailable ? 'opacity-75 grayscale-[30%]' : ''}`} onClick={onInfoClick}>
       {/* Image */}
       <div className="relative aspect-[4/3] lg:aspect-[4/3] overflow-hidden bg-zinc-800">
-        {item.image ? (
-          <Image
-            src={item.image}
-            alt={item.name}
-            fill
-            unoptimized={true}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-800 group-hover:scale-105 transition-transform duration-700">
-             <svg className="w-16 h-16 text-zinc-700 mb-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-               <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
-             </svg>
-          </div>
-        )}
+        <Image
+          src={item.image || '/placeholder-food.jpg'}
+          alt={item.name}
+          fill
+          unoptimized={true}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        />
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
 
@@ -549,25 +541,17 @@ function DetailModal({
 
         {/* Image Side */}
         <div className="relative w-full xl:w-[60%] h-[35vh] lg:h-[45vh] xl:h-full shrink-0 bg-zinc-100 flex items-center justify-center">
-          {item.image ? (
-            <>
-              <Image
-                src={item.image}
-                alt={item.name}
-                fill
-                unoptimized={true}
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                className="object-cover"
-                priority
-              />
-              {/* Mobile: gradient for readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent xl:hidden" />
-            </>
-          ) : (
-            <svg className="w-32 h-32 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-               <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
+          <Image
+            src={item.image || '/placeholder-food.jpg'}
+            alt={item.name}
+            fill
+            unoptimized={true}
+            sizes="(max-width: 1024px) 100vw, 60vw"
+            className="object-cover"
+            priority
+          />
+          {/* Mobile: gradient for readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent xl:hidden" />
         </div>
 
         {/* Details Side */}
@@ -813,12 +797,14 @@ function DetailModal({
                       ${totalItemPrice.toFixed(2)}
                     </span>
                   </div>
-                  <button
-                    disabled
-                    className="flex-1 bg-zinc-200 text-zinc-500 px-2 py-3 sm:px-4 sm:py-4 rounded-xl font-brandon uppercase tracking-widest text-[8px] sm:text-xs font-bold flex items-center justify-center text-center cursor-not-allowed border border-zinc-300 leading-tight"
+                  <a
+                    href="https://order.toasttab.com/online/queen-bean-246-s-11th-street"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 bg-[#86603A] text-white px-2 py-3 sm:px-6 sm:py-4 rounded-xl font-brandon uppercase tracking-wider sm:tracking-widest text-[10px] sm:text-xs font-bold hover:bg-black transition-colors shadow-xl flex items-center justify-center text-center group leading-none"
                   >
-                    Not Taking Orders
-                  </button>
+                    Order Here
+                  </a>
                 </div>
               ) : (
                 <div className="flex-1 flex flex-row gap-2 sm:gap-3">
