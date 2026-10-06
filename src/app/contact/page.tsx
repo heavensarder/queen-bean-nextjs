@@ -208,7 +208,7 @@ export default function ContactPage() {
                       {days.map((day, index) => (
                         <div key={day} className={`flex justify-between items-center ${index === todayIndex ? 'text-white font-bold bg-[#86603A]/20 -mx-2 px-2 py-1 rounded' : ''}`}>
                           <span>{day}</span>
-                          <span>6:00 AM - 6:00 PM</span>
+                          <span>{(day === 'Saturday' || day === 'Sunday') ? '7:00 AM - 6:00 PM' : '6:00 AM - 6:00 PM'}</span>
                         </div>
                       ))}
                     </div>
